@@ -1,0 +1,96 @@
+==> (0) stop any replica left from an earlier run
+==> (1) configure primary for replication (only once)
+ wal_level 
+-----------
+ replica
+(1 row)
+
+ max_wal_senders 
+-----------------
+ 10
+(1 row)
+
+==> (2) base backup + physical replication slot
+ pg_drop_replication_slot 
+--------------------------
+(0 rows)
+
+==> (3) replica config (own postgresql.conf + copies of pg_hba/pg_ident + chmod 700)
+==> (4) start replica on port 5433
+waiting for server to start.... done
+server started
+ is_replica |              now              
+------------+-------------------------------
+ t          | 2026-11-11 21:52:32.077202+00
+(1 row)
+
+==> (5) replication status (primary side)
+ application_name |   state   | sync_state | sent_lsn  | write_lsn 
+------------------+-----------+------------+-----------+-----------
+ walreceiver      | streaming | async      | 0/E000000 | 0/E000000
+(1 row)
+
+==> replica setup DONE.
+==> P5c: replica demo (ONE script that switches servers: reject write, row arrives, lag, status)
+
+=== 1. PRIMARY: who am I? ===
+You are now connected to database "cleanroute" as user "postgres".
+ port | is_replica | expected_role 
+------+------------+---------------
+ 5432 | f          | PRIMARY
+
+
+=== 2. REPLICA: who am I? ===
+You are now connected to database "cleanroute" as user "postgres" via socket in "/var/run/postgresql" at port "5433".
+ port | is_replica | expected_role 
+------+------------+---------------
+ 5433 | t          | REPLICA
+
+
+=== 3. REPLICA rejects a write (read-only standby) - the next line SHOULD be an ERROR ===
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-5-distributed-cloud/replica_demo.sql:26: ERROR:  cannot execute INSERT in a read-only transaction
+
+=== 4. PRIMARY: insert a marker row ===
+You are now connected to database "cleanroute" as user "postgres" via socket in "/var/run/postgresql" at port "5432".
+DELETE 0
+INSERT 0 1
+  node   | marker_rows 
+---------+-------------
+ primary |           1
+
+primary WAL position after the insert:  0/E002128
+
+=== 5. REPLICA: wait until it has replayed that position, then read the row ===
+You are now connected to database "cleanroute" as user "postgres" via socket in "/var/run/postgresql" at port "5433".
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-5-distributed-cloud/replica_demo.sql:50: NOTICE:  replica replayed up to 0/E002128 (waited 6 x 50 ms)
+DO
+  node   | marker_rows 
+---------+-------------
+ replica |           1
+
+ replica_replay_lsn | time_since_last_replayed_commit 
+--------------------+---------------------------------
+ 0/E002128          | 00:00:00.322527
+
+
+=== 6. PRIMARY: replication status (pg_stat_replication) ===
+You are now connected to database "cleanroute" as user "postgres" via socket in "/var/run/postgresql" at port "5432".
+ application_name |   state   | sync_state | sent_lsn  | replay_lsn | replay_gap_bytes 
+------------------+-----------+------------+-----------+------------+------------------
+ walreceiver      | streaming | async      | 0/E002128 | 0/E002128  |                0
+
+
+=== 7. PRIMARY: delete the marker, then confirm it disappears on the REPLICA too ===
+DELETE 1
+  node   | marker_rows 
+---------+-------------
+ primary |           0
+
+You are now connected to database "cleanroute" as user "postgres" via socket in "/var/run/postgresql" at port "5433".
+DO
+  node   | marker_rows 
+---------+-------------
+ replica |           0
+
+
+=== replica demo DONE: write rejected on the replica, insert and delete both replicated ===

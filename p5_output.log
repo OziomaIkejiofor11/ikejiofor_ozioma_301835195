@@ -1,0 +1,191 @@
+==> P5a: monthly range partitioning of pickups + pruning demo  (evidence: /workspaces/ikejiofor_ozioma_301835195/portfolio-5-distributed-cloud/partition_output.log)
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-5-distributed-cloud/partition_setup.sql:7: NOTICE:  table "pickup_part" does not exist, skipping
+DROP TABLE
+CREATE TABLE
+DO
+INSERT 0 54100
+==> row distribution per partition (one row per month):
+      partition      | rows 
+---------------------+------
+ pickup_part_2024_11 | 1537
+ pickup_part_2024_12 | 2201
+ pickup_part_2025_01 | 2305
+ pickup_part_2025_02 | 2020
+ pickup_part_2025_03 | 2194
+ pickup_part_2025_04 | 2207
+ pickup_part_2025_05 | 2275
+ pickup_part_2025_06 | 2120
+ pickup_part_2025_07 | 2286
+ pickup_part_2025_08 | 2210
+ pickup_part_2025_09 | 2201
+ pickup_part_2025_10 | 2280
+ pickup_part_2025_11 | 2123
+ pickup_part_2025_12 | 2283
+ pickup_part_2026_01 | 2285
+ pickup_part_2026_02 | 2049
+ pickup_part_2026_03 | 2202
+ pickup_part_2026_04 | 2203
+ pickup_part_2026_05 | 2197
+ pickup_part_2026_06 | 2206
+ pickup_part_2026_07 | 2293
+ pickup_part_2026_08 | 2200
+ pickup_part_2026_09 | 2201
+ pickup_part_2026_10 | 2297
+ pickup_part_2026_11 | 1725
+(25 rows)
+
+==> partition count:
+ monthly_partitions 
+--------------------
+                 25
+(1 row)
+
+==> EXPLAIN (no pruning): full table scan across ALL partitions
+                         QUERY PLAN                         
+------------------------------------------------------------
+ Aggregate
+   ->  Append
+         ->  Seq Scan on pickup_part_2024_11 pickup_part_1
+         ->  Seq Scan on pickup_part_2024_12 pickup_part_2
+         ->  Seq Scan on pickup_part_2025_01 pickup_part_3
+         ->  Seq Scan on pickup_part_2025_02 pickup_part_4
+         ->  Seq Scan on pickup_part_2025_03 pickup_part_5
+         ->  Seq Scan on pickup_part_2025_04 pickup_part_6
+         ->  Seq Scan on pickup_part_2025_05 pickup_part_7
+         ->  Seq Scan on pickup_part_2025_06 pickup_part_8
+         ->  Seq Scan on pickup_part_2025_07 pickup_part_9
+         ->  Seq Scan on pickup_part_2025_08 pickup_part_10
+         ->  Seq Scan on pickup_part_2025_09 pickup_part_11
+         ->  Seq Scan on pickup_part_2025_10 pickup_part_12
+         ->  Seq Scan on pickup_part_2025_11 pickup_part_13
+         ->  Seq Scan on pickup_part_2025_12 pickup_part_14
+         ->  Seq Scan on pickup_part_2026_01 pickup_part_15
+         ->  Seq Scan on pickup_part_2026_02 pickup_part_16
+         ->  Seq Scan on pickup_part_2026_03 pickup_part_17
+         ->  Seq Scan on pickup_part_2026_04 pickup_part_18
+         ->  Seq Scan on pickup_part_2026_05 pickup_part_19
+         ->  Seq Scan on pickup_part_2026_06 pickup_part_20
+         ->  Seq Scan on pickup_part_2026_07 pickup_part_21
+         ->  Seq Scan on pickup_part_2026_08 pickup_part_22
+         ->  Seq Scan on pickup_part_2026_09 pickup_part_23
+         ->  Seq Scan on pickup_part_2026_10 pickup_part_24
+         ->  Seq Scan on pickup_part_2026_11 pickup_part_25
+(27 rows)
+
+==> EXPLAIN (partition pruning): a single-month filter scans ONE partition
+                     QUERY PLAN                      
+-----------------------------------------------------
+ Append
+   Subplans Removed: 24
+   ->  Seq Scan on pickup_part_2026_11 pickup_part_1
+         Filter: (scheduled_date = CURRENT_DATE)
+(4 rows)
+
+==> EXPLAIN (range pruning): a 1-week window scans at most 2 partitions
+                                                   QUERY PLAN                                                   
+----------------------------------------------------------------------------------------------------------------
+ Append
+   Subplans Removed: 24
+   ->  Seq Scan on pickup_part_2026_11 pickup_part_1
+         Filter: ((scheduled_date >= CURRENT_DATE) AND (scheduled_date <= (CURRENT_DATE + '7 days'::interval)))
+(4 rows)
+
+==> P5b: primary + streaming read replica (setup)  (evidence: /workspaces/ikejiofor_ozioma_301835195/portfolio-5-distributed-cloud/replication_output.log)
+==> (0) stop any replica left from an earlier run
+==> (1) configure primary for replication (only once)
+ wal_level 
+-----------
+ replica
+(1 row)
+
+ max_wal_senders 
+-----------------
+ 10
+(1 row)
+
+==> (2) base backup + physical replication slot
+ pg_drop_replication_slot 
+--------------------------
+(0 rows)
+
+==> (3) replica config (own postgresql.conf + copies of pg_hba/pg_ident + chmod 700)
+==> (4) start replica on port 5433
+waiting for server to start.... done
+server started
+ is_replica |              now              
+------------+-------------------------------
+ t          | 2026-11-11 21:52:32.077202+00
+(1 row)
+
+==> (5) replication status (primary side)
+ application_name |   state   | sync_state | sent_lsn  | write_lsn 
+------------------+-----------+------------+-----------+-----------
+ walreceiver      | streaming | async      | 0/E000000 | 0/E000000
+(1 row)
+
+==> replica setup DONE.
+==> P5c: replica demo (ONE script that switches servers: reject write, row arrives, lag, status)
+
+=== 1. PRIMARY: who am I? ===
+You are now connected to database "cleanroute" as user "postgres".
+ port | is_replica | expected_role 
+------+------------+---------------
+ 5432 | f          | PRIMARY
+
+
+=== 2. REPLICA: who am I? ===
+You are now connected to database "cleanroute" as user "postgres" via socket in "/var/run/postgresql" at port "5433".
+ port | is_replica | expected_role 
+------+------------+---------------
+ 5433 | t          | REPLICA
+
+
+=== 3. REPLICA rejects a write (read-only standby) - the next line SHOULD be an ERROR ===
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-5-distributed-cloud/replica_demo.sql:26: ERROR:  cannot execute INSERT in a read-only transaction
+
+=== 4. PRIMARY: insert a marker row ===
+You are now connected to database "cleanroute" as user "postgres" via socket in "/var/run/postgresql" at port "5432".
+DELETE 0
+INSERT 0 1
+  node   | marker_rows 
+---------+-------------
+ primary |           1
+
+primary WAL position after the insert:  0/E002128
+
+=== 5. REPLICA: wait until it has replayed that position, then read the row ===
+You are now connected to database "cleanroute" as user "postgres" via socket in "/var/run/postgresql" at port "5433".
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-5-distributed-cloud/replica_demo.sql:50: NOTICE:  replica replayed up to 0/E002128 (waited 6 x 50 ms)
+DO
+  node   | marker_rows 
+---------+-------------
+ replica |           1
+
+ replica_replay_lsn | time_since_last_replayed_commit 
+--------------------+---------------------------------
+ 0/E002128          | 00:00:00.322527
+
+
+=== 6. PRIMARY: replication status (pg_stat_replication) ===
+You are now connected to database "cleanroute" as user "postgres" via socket in "/var/run/postgresql" at port "5432".
+ application_name |   state   | sync_state | sent_lsn  | replay_lsn | replay_gap_bytes 
+------------------+-----------+------------+-----------+------------+------------------
+ walreceiver      | streaming | async      | 0/E002128 | 0/E002128  |                0
+
+
+=== 7. PRIMARY: delete the marker, then confirm it disappears on the REPLICA too ===
+DELETE 1
+  node   | marker_rows 
+---------+-------------
+ primary |           0
+
+You are now connected to database "cleanroute" as user "postgres" via socket in "/var/run/postgresql" at port "5433".
+DO
+  node   | marker_rows 
+---------+-------------
+ replica |           0
+
+
+=== replica demo DONE: write rejected on the replica, insert and delete both replicated ===
+==> P5 DONE
+    Evidence files: /workspaces/ikejiofor_ozioma_301835195/portfolio-5-distributed-cloud/partition_output.log  /workspaces/ikejiofor_ozioma_301835195/portfolio-5-distributed-cloud/replication_output.log
