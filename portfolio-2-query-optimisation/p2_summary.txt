@@ -1,0 +1,12 @@
+Q   | BEFORE: scan on fact table                         ms | AFTER: scan on fact table                                              ms | change
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Q1  | Bitmap Heap Scan on pickup                      2.785 | Index Only Scan on pickup (idx_pickup_open_zone_date)               0.325 | -88%
+Q2  | Seq Scan on collection_record                  63.538 | Seq Scan on collection_record                                      59.954 | -6%
+Q3  | Seq Scan on collection_record                  26.202 | Seq Scan on collection_record                                      28.273 | +8%
+Q4  | Seq Scan on pickup                             23.386 | Seq Scan on pickup                                                 21.608 | -8%
+Q5  | Index Scan on shift (shift_pkey)               57.543 | Index Scan on shift (shift_pkey)                                   99.528 | +73%
+Q6  | Bitmap Heap Scan on payment                     2.039 | Bitmap Heap Scan on payment                                         3.285 | +61%
+Q7  | Seq Scan on collection_record                  11.377 | Seq Scan on collection_record                                      21.917 | +93%
+Q8  | Seq Scan on payment                             3.063 | Seq Scan on payment                                                12.642 | +313%
+
+Negative change = faster after the index. Small tables or whole-table aggregates keep a Seq Scan (that is the correct plan: an index cannot help when most rows are needed).

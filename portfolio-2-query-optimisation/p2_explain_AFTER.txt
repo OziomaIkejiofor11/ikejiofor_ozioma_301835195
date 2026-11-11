@@ -1,0 +1,173 @@
+==== Q1 EXPLAIN ANALYZE: open pickups per zone today ====
+                                                                            QUERY PLAN                                                                             
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=18.43..18.43 rows=1 width=40) (actual time=0.276..0.277 rows=1 loops=1)
+   Sort Key: (count(*)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   ->  GroupAggregate  (cost=18.40..18.42 rows=1 width=40) (actual time=0.259..0.259 rows=1 loops=1)
+         Group Key: z.name
+         ->  Sort  (cost=18.40..18.40 rows=1 width=32) (actual time=0.245..0.248 rows=80 loops=1)
+               Sort Key: z.name
+               Sort Method: quicksort  Memory: 26kB
+               ->  Nested Loop  (cost=0.30..18.39 rows=1 width=32) (actual time=0.036..0.215 rows=80 loops=1)
+                     ->  Index Only Scan using idx_pickup_open_zone_date on pickup p  (cost=0.15..10.19 rows=1 width=8) (actual time=0.027..0.158 rows=80 loops=1)
+                           Index Cond: (scheduled_date = CURRENT_DATE)
+                           Heap Fetches: 80
+                     ->  Index Scan using zone_pkey on zone z  (cost=0.15..8.17 rows=1 width=40) (actual time=0.000..0.000 rows=1 loops=80)
+                           Index Cond: (zone_id = p.zone_id)
+ Planning Time: 0.748 ms
+ Execution Time: 0.325 ms
+(16 rows)
+
+==== Q2 EXPLAIN ANALYZE: tonnes collected per zone per month ====
+                                                                       QUERY PLAN                                                                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=16326.41..16453.86 rows=50980 width=104) (actual time=59.280..59.291 rows=150 loops=1)
+   Sort Key: (to_char((date_trunc('month'::text, (s.shift_date)::timestamp with time zone)), 'YYYY-MM'::text)) DESC, z.name
+   Sort Method: quicksort  Memory: 33kB
+   ->  GroupAggregate  (cost=7511.68..9550.88 rows=50980 width=104) (actual time=49.294..59.207 rows=150 loops=1)
+         Group Key: z.name, (date_trunc('month'::text, (s.shift_date)::timestamp with time zone))
+         ->  Sort  (cost=7511.68..7639.13 rows=50980 width=60) (actual time=49.107..52.798 rows=50980 loops=1)
+               Sort Key: z.name, (date_trunc('month'::text, (s.shift_date)::timestamp with time zone))
+               Sort Method: external merge  Disk: 2120kB
+               ->  Hash Join  (cost=47.43..1607.64 rows=50980 width=60) (actual time=0.205..26.611 rows=50980 loops=1)
+                     Hash Cond: (s.zone_id = z.zone_id)
+                     ->  Hash Join  (cost=24.38..1194.89 rows=50980 width=28) (actual time=0.172..12.824 rows=50980 loops=1)
+                           Hash Cond: (cr.shift_id = s.shift_id)
+                           ->  Seq Scan on collection_record cr  (cost=0.00..1035.80 rows=50980 width=24) (actual time=0.004..4.225 rows=50980 loops=1)
+                           ->  Hash  (cost=16.39..16.39 rows=639 width=20) (actual time=0.151..0.152 rows=639 loops=1)
+                                 Buckets: 1024  Batches: 1  Memory Usage: 43kB
+                                 ->  Seq Scan on shift s  (cost=0.00..16.39 rows=639 width=20) (actual time=0.004..0.076 rows=639 loops=1)
+                     ->  Hash  (cost=15.80..15.80 rows=580 width=40) (actual time=0.013..0.014 rows=6 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                           ->  Seq Scan on zone z  (cost=0.00..15.80 rows=580 width=40) (actual time=0.004..0.005 rows=6 loops=1)
+ Planning Time: 0.642 ms
+ Execution Time: 59.954 ms
+(21 rows)
+
+==== Q3 EXPLAIN ANALYZE: recycling rate % per zone ====
+                                                                                   QUERY PLAN                                                                                   
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=1903.66..1905.11 rows=580 width=64) (actual time=28.222..28.226 rows=6 loops=1)
+   Sort Key: (round(((100.0 * sum(CASE WHEN (cr.waste_type = 'recyclable'::text) THEN cr.weight_kg ELSE '0'::numeric END)) / NULLIF(sum(cr.weight_kg), '0'::numeric)), 2)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   ->  HashAggregate  (cost=1862.54..1877.04 rows=580 width=64) (actual time=28.198..28.206 rows=6 loops=1)
+         Group Key: z.name
+         Batches: 1  Memory Usage: 49kB
+         ->  Hash Join  (cost=47.43..1352.74 rows=50980 width=80) (actual time=0.150..18.784 rows=50980 loops=1)
+               Hash Cond: (s.zone_id = z.zone_id)
+               ->  Hash Join  (cost=24.38..1194.89 rows=50980 width=56) (actual time=0.137..12.414 rows=50980 loops=1)
+                     Hash Cond: (cr.shift_id = s.shift_id)
+                     ->  Seq Scan on collection_record cr  (cost=0.00..1035.80 rows=50980 width=56) (actual time=0.003..3.517 rows=50980 loops=1)
+                     ->  Hash  (cost=16.39..16.39 rows=639 width=16) (actual time=0.128..0.129 rows=639 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 38kB
+                           ->  Seq Scan on shift s  (cost=0.00..16.39 rows=639 width=16) (actual time=0.003..0.065 rows=639 loops=1)
+               ->  Hash  (cost=15.80..15.80 rows=580 width=40) (actual time=0.010..0.010 rows=6 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     ->  Seq Scan on zone z  (cost=0.00..15.80 rows=580 width=40) (actual time=0.005..0.006 rows=6 loops=1)
+ Planning Time: 0.268 ms
+ Execution Time: 28.273 ms
+(19 rows)
+
+==== Q4 EXPLAIN ANALYZE: missed-pickup rate per zone ====
+                                                                    QUERY PLAN                                                                     
+---------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=4181.11..4182.56 rows=580 width=64) (actual time=21.567..21.570 rows=6 loops=1)
+   Sort Key: (round(((100.0 * (sum(CASE WHEN (p.status = 'MISSED'::text) THEN 1 ELSE 0 END))::numeric) / (NULLIF(count(*), 0))::numeric), 2)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   ->  HashAggregate  (cost=4139.98..4154.48 rows=580 width=64) (actual time=21.550..21.558 rows=6 loops=1)
+         Group Key: z.name
+         Batches: 1  Memory Usage: 49kB
+         ->  Hash Join  (cost=23.05..3599.03 rows=54095 width=64) (actual time=0.014..15.113 rows=54095 loops=1)
+               Hash Cond: (p.zone_id = z.zone_id)
+               ->  Seq Scan on pickup p  (cost=0.00..3432.95 rows=54095 width=40) (actual time=0.003..6.903 rows=54095 loops=1)
+               ->  Hash  (cost=15.80..15.80 rows=580 width=40) (actual time=0.007..0.008 rows=6 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     ->  Seq Scan on zone z  (cost=0.00..15.80 rows=580 width=40) (actual time=0.003..0.004 rows=6 loops=1)
+ Planning Time: 0.171 ms
+ Execution Time: 21.608 ms
+(14 rows)
+
+==== Q5 EXPLAIN ANALYZE: truck utilisation % per shift ====
+                                                                                         QUERY PLAN                                                                                         
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=10483.16..10483.29 rows=50 width=154) (actual time=99.461..99.473 rows=50 loops=1)
+   ->  Sort  (cost=10483.16..10610.61 rows=50980 width=154) (actual time=99.459..99.466 rows=50 loops=1)
+         Sort Key: (round(((100.0 * sum(cr.weight_kg)) / (t.capacity_tonnes * '1000'::numeric)), 2)) DESC
+         Sort Method: top-N heapsort  Memory: 35kB
+         ->  GroupAggregate  (cost=31.41..8789.64 rows=50980 width=154) (actual time=0.304..99.060 rows=626 loops=1)
+               Group Key: s.shift_id, t.plate_number, t.capacity_tonnes, z.name
+               ->  Incremental Sort  (cost=31.41..6750.44 rows=50980 width=106) (actual time=0.206..82.105 rows=50980 loops=1)
+                     Sort Key: s.shift_id, t.plate_number, t.capacity_tonnes, z.name
+                     Presorted Key: s.shift_id
+                     Full-sort Groups: 626  Sort Method: quicksort  Average Memory: 29kB  Peak Memory: 29kB
+                     Pre-sorted Groups: 626  Sort Method: quicksort  Average Memory: 31kB  Peak Memory: 31kB
+                     ->  Merge Join  (cost=0.86..4071.58 rows=50980 width=106) (actual time=0.039..46.305 rows=50980 loops=1)
+                           Merge Cond: (s.shift_id = cr.shift_id)
+                           ->  Nested Loop  (cost=0.58..375.74 rows=639 width=90) (actual time=0.015..2.023 rows=638 loops=1)
+                                 ->  Nested Loop  (cost=0.43..220.80 rows=639 width=66) (actual time=0.012..1.225 rows=638 loops=1)
+                                       ->  Index Scan using shift_pkey on shift s  (cost=0.28..65.86 rows=639 width=28) (actual time=0.006..0.203 rows=638 loops=1)
+                                       ->  Index Scan using truck_pkey on truck t  (cost=0.15..0.24 rows=1 width=54) (actual time=0.001..0.001 rows=1 loops=638)
+                                             Index Cond: (truck_id = s.truck_id)
+                                 ->  Index Scan using zone_pkey on zone z  (cost=0.15..0.24 rows=1 width=40) (actual time=0.001..0.001 rows=1 loops=638)
+                                       Index Cond: (zone_id = s.zone_id)
+                           ->  Index Scan using idx_collection_shift_waste on collection_record cr  (cost=0.29..3056.99 rows=50980 width=24) (actual time=0.020..34.088 rows=50980 loops=1)
+ Planning Time: 0.572 ms
+ Execution Time: 99.528 ms
+(23 rows)
+
+==== Q6 EXPLAIN ANALYZE: customers with unpaid bills ====
+                                                                           QUERY PLAN                                                                            
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=181.99..182.29 rows=120 width=136) (actual time=3.155..3.186 rows=480 loops=1)
+   Sort Key: (sum(p.amount_naira)) DESC
+   Sort Method: quicksort  Memory: 62kB
+   ->  HashAggregate  (cost=176.34..177.84 rows=120 width=136) (actual time=2.644..2.862 rows=480 loops=1)
+         Group Key: c.customer_id, z.name
+         Batches: 1  Memory Usage: 313kB
+         ->  Hash Join  (cost=46.51..175.44 rows=120 width=120) (actual time=0.378..1.842 rows=1657 loops=1)
+               Hash Cond: (c.zone_id = z.zone_id)
+               ->  Hash Join  (cost=23.46..152.08 rows=120 width=96) (actual time=0.362..1.484 rows=1657 loops=1)
+                     Hash Cond: (p.customer_id = c.customer_id)
+                     ->  Bitmap Heap Scan on payment p  (cost=4.91..133.21 rows=120 width=24) (actual time=0.116..0.695 rows=1657 loops=1)
+                           Recheck Cond: (status = ANY ('{unpaid,partial}'::text[]))
+                           Heap Blocks: exact=123
+                           ->  Bitmap Index Scan on idx_payment_unpaid_customer  (cost=0.00..4.88 rows=120 width=0) (actual time=0.093..0.094 rows=1657 loops=1)
+                     ->  Hash  (cost=13.80..13.80 rows=380 width=80) (actual time=0.239..0.240 rows=480 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 46kB
+                           ->  Seq Scan on customer c  (cost=0.00..13.80 rows=380 width=80) (actual time=0.006..0.104 rows=480 loops=1)
+               ->  Hash  (cost=15.80..15.80 rows=580 width=40) (actual time=0.010..0.011 rows=6 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     ->  Seq Scan on zone z  (cost=0.00..15.80 rows=580 width=40) (actual time=0.005..0.006 rows=6 loops=1)
+ Planning Time: 0.711 ms
+ Execution Time: 3.285 ms
+(22 rows)
+
+==== Q7 EXPLAIN ANALYZE: average weight per waste type ====
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=1428.79..1429.29 rows=200 width=72) (actual time=21.880..21.881 rows=1 loops=1)
+   Sort Key: (round(avg(weight_kg), 2)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   ->  HashAggregate  (cost=1418.15..1421.15 rows=200 width=72) (actual time=21.868..21.870 rows=1 loops=1)
+         Group Key: waste_type
+         Batches: 1  Memory Usage: 40kB
+         ->  Seq Scan on collection_record  (cost=0.00..1035.80 rows=50980 width=48) (actual time=0.005..5.532 rows=50980 loops=1)
+ Planning Time: 0.098 ms
+ Execution Time: 21.917 ms
+(9 rows)
+
+==== Q8 EXPLAIN ANALYZE: monthly revenue collected vs billed ====
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=375.64..376.14 rows=200 width=100) (actual time=12.601..12.604 rows=25 loops=1)
+   Sort Key: (to_char((billing_month)::timestamp with time zone, 'YYYY-MM'::text)) DESC
+   Sort Method: quicksort  Memory: 26kB
+   ->  HashAggregate  (cost=363.00..368.00 rows=200 width=100) (actual time=12.537..12.565 rows=25 loops=1)
+         Group Key: billing_month
+         Batches: 1  Memory Usage: 64kB
+         ->  Seq Scan on payment  (cost=0.00..243.00 rows=12000 width=52) (actual time=0.006..6.325 rows=12000 loops=1)
+ Planning Time: 0.150 ms
+ Execution Time: 12.642 ms
+(9 rows)
+

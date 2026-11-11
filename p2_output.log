@@ -1,0 +1,799 @@
+==> Q1-Q8 results (current plan, baseline indexes only)
+==> Q1: open pickups per zone today
+ zone  | open_pickups 
+-------+--------------
+ Lekki |           80
+(1 row)
+
+==> Q2: tonnes collected per zone per month
+        zone         |  month  | tonnes_collected 
+---------------------+---------+------------------
+ Ikeja               | 2026-11 |             1.82
+ Independence Layout | 2026-11 |             1.96
+ Lekki               | 2026-11 |             1.72
+ New Haven           | 2026-11 |             1.60
+ Surulere            | 2026-11 |             3.54
+ Yaba                | 2026-11 |             3.73
+ Ikeja               | 2026-10 |             9.35
+ Independence Layout | 2026-10 |             8.90
+ Lekki               | 2026-10 |             7.03
+ New Haven           | 2026-10 |             8.80
+ Surulere            | 2026-10 |             7.20
+ Yaba                | 2026-10 |             7.41
+ Ikeja               | 2026-09 |             7.29
+ Independence Layout | 2026-09 |             7.29
+ Lekki               | 2026-09 |             8.76
+ New Haven           | 2026-09 |             7.17
+ Surulere            | 2026-09 |             8.77
+ Yaba                | 2026-09 |             7.16
+ Ikeja               | 2026-08 |             7.30
+ Independence Layout | 2026-08 |             6.91
+ Lekki               | 2026-08 |             6.81
+ New Haven           | 2026-08 |             8.81
+ Surulere            | 2026-08 |             7.18
+ Yaba                | 2026-08 |             8.77
+ Ikeja               | 2026-07 |             9.22
+ Independence Layout | 2026-07 |             8.72
+ Lekki               | 2026-07 |             9.00
+ New Haven           | 2026-07 |             7.14
+ Surulere            | 2026-07 |             7.08
+ Yaba                | 2026-07 |             6.91
+ Ikeja               | 2026-06 |             7.12
+ Independence Layout | 2026-06 |             6.87
+ Lekki               | 2026-06 |             7.68
+ New Haven           | 2026-06 |             7.42
+ Surulere            | 2026-06 |             8.53
+ Yaba                | 2026-06 |            10.36
+ Ikeja               | 2026-05 |             8.71
+ Independence Layout | 2026-05 |            10.85
+ Lekki               | 2026-05 |             8.44
+ New Haven           | 2026-05 |            10.93
+ Surulere            | 2026-05 |             7.83
+ Yaba                | 2026-05 |             8.70
+ Ikeja               | 2026-04 |            11.03
+ Independence Layout | 2026-04 |             9.08
+ Lekki               | 2026-04 |            11.46
+ New Haven           | 2026-04 |             8.67
+ Surulere            | 2026-04 |             8.68
+ Yaba                | 2026-04 |             8.21
+ Ikeja               | 2026-03 |             7.06
+ Independence Layout | 2026-03 |             6.73
+ Lekki               | 2026-03 |             6.74
+ New Haven           | 2026-03 |             7.20
+ Surulere            | 2026-03 |             9.81
+ Yaba                | 2026-03 |             8.43
+ Ikeja               | 2026-02 |             7.39
+ Independence Layout | 2026-02 |             7.39
+ Lekki               | 2026-02 |             7.01
+ New Haven           | 2026-02 |             7.31
+ Surulere            | 2026-02 |             7.19
+ Yaba                | 2026-02 |             7.02
+ Ikeja               | 2026-01 |             9.35
+ Independence Layout | 2026-01 |             8.98
+ Lekki               | 2026-01 |             7.06
+ New Haven           | 2026-01 |             9.38
+ Surulere            | 2026-01 |             7.03
+ Yaba                | 2026-01 |             6.90
+ Ikeja               | 2025-12 |             9.76
+ Independence Layout | 2025-12 |             8.50
+ Lekki               | 2025-12 |            10.31
+ New Haven           | 2025-12 |            11.19
+ Surulere            | 2025-12 |            12.52
+ Yaba                | 2025-12 |            12.30
+ Ikeja               | 2025-11 |             6.85
+ Independence Layout | 2025-11 |             7.12
+ Lekki               | 2025-11 |             7.38
+ New Haven           | 2025-11 |             9.31
+ Surulere            | 2025-11 |             7.38
+ Yaba                | 2025-11 |             7.12
+ Ikeja               | 2025-10 |             8.68
+ Independence Layout | 2025-10 |             9.16
+ Lekki               | 2025-10 |             8.71
+ New Haven           | 2025-10 |             7.47
+ Surulere            | 2025-10 |             7.19
+ Yaba                | 2025-10 |             7.17
+ Ikeja               | 2025-09 |             7.14
+ Independence Layout | 2025-09 |             7.14
+ Lekki               | 2025-09 |             7.13
+ New Haven           | 2025-09 |             7.14
+ Surulere            | 2025-09 |             8.71
+ Yaba                | 2025-09 |             9.34
+ Ikeja               | 2025-08 |             6.63
+ Independence Layout | 2025-08 |             9.15
+ Lekki               | 2025-08 |             7.25
+ New Haven           | 2025-08 |             9.07
+ Surulere            | 2025-08 |             7.33
+ Yaba                | 2025-08 |             7.36
+ Ikeja               | 2025-07 |             9.02
+ Independence Layout | 2025-07 |             7.05
+ Lekki               | 2025-07 |             8.76
+ New Haven           | 2025-07 |             7.19
+ Surulere            | 2025-07 |             8.81
+ Yaba                | 2025-07 |             7.03
+ Ikeja               | 2025-06 |             7.83
+ Independence Layout | 2025-06 |             8.78
+ Lekki               | 2025-06 |             9.50
+ New Haven           | 2025-06 |             8.19
+ Surulere            | 2025-06 |             9.09
+ Yaba                | 2025-06 |            11.61
+ Ikeja               | 2025-05 |             8.64
+ Independence Layout | 2025-05 |             8.91
+ Lekki               | 2025-05 |             7.56
+ New Haven           | 2025-05 |             8.65
+ Surulere            | 2025-05 |             7.28
+ Yaba                | 2025-05 |             7.32
+ Ikeja               | 2025-04 |             9.36
+ Independence Layout | 2025-04 |             8.56
+ Lekki               | 2025-04 |            10.97
+ New Haven           | 2025-04 |             8.55
+ Surulere            | 2025-04 |            11.44
+ Yaba                | 2025-04 |             7.70
+ Ikeja               | 2025-03 |             7.05
+ Independence Layout | 2025-03 |             6.91
+ Lekki               | 2025-03 |             6.78
+ New Haven           | 2025-03 |             8.50
+ Surulere            | 2025-03 |             7.41
+ Yaba                | 2025-03 |             8.88
+ Ikeja               | 2025-02 |             7.24
+ Independence Layout | 2025-02 |             6.81
+ Lekki               | 2025-02 |             7.40
+ New Haven           | 2025-02 |             7.29
+ Surulere            | 2025-02 |             6.83
+ Yaba                | 2025-02 |             7.07
+ Ikeja               | 2025-01 |             8.87
+ Independence Layout | 2025-01 |             9.37
+ Lekki               | 2025-01 |             9.03
+ New Haven           | 2025-01 |             7.04
+ Surulere            | 2025-01 |             7.39
+ Yaba                | 2025-01 |             7.37
+ Ikeja               | 2024-12 |             9.00
+ Independence Layout | 2024-12 |            10.27
+ Lekki               | 2024-12 |             9.07
+ New Haven           | 2024-12 |            10.58
+ Surulere            | 2024-12 |            11.13
+ Yaba                | 2024-12 |            12.33
+ Ikeja               | 2024-11 |             5.42
+ Independence Layout | 2024-11 |             5.58
+ Lekki               | 2024-11 |             5.67
+ New Haven           | 2024-11 |             5.63
+ Surulere            | 2024-11 |             5.49
+ Yaba                | 2024-11 |             5.67
+(150 rows)
+
+==> Q3: recycling rate % (recyclable / total) per zone
+        zone         | recycling_rate_pct 
+---------------------+--------------------
+ New Haven           |               0.00
+ Lekki               |               0.00
+ Ikeja               |               0.00
+ Independence Layout |               0.00
+ Surulere            |               0.00
+ Yaba                |               0.00
+(6 rows)
+
+==> Q4: missed-pickup rate per zone
+        zone         | missed_rate_pct 
+---------------------+-----------------
+ Yaba                |            3.99
+ Ikeja               |            3.98
+ Surulere            |            3.95
+ Lekki               |            3.84
+ Independence Layout |            3.74
+ New Haven           |            3.52
+(6 rows)
+
+==> Q5: truck utilisation % per shift (load / capacity)
+ shift_id | plate_number |        zone         | shift_date | capacity_tonnes | load_tonnes | utilisation_pct 
+----------+--------------+---------------------+------------+-----------------+-------------+-----------------
+      273 | LAG-708-XZ   | Ikeja               | 2025-12-25 |            5.00 |        4.18 |           83.60
+      379 | LAG-708-XZ   | Surulere            | 2025-12-23 |            5.00 |        3.97 |           79.45
+      166 | LAG-708-XZ   | Yaba                | 2025-12-22 |            5.00 |        3.85 |           76.99
+      592 | LAG-708-XZ   | New Haven           | 2025-12-27 |            5.00 |        3.65 |           72.95
+       59 | LAG-708-XZ   | Lekki               | 2025-12-24 |            5.00 |        3.44 |           68.83
+      486 | LAG-708-XZ   | Independence Layout | 2025-12-26 |            5.00 |        3.39 |           67.80
+      295 | LAG-708-XZ   | Ikeja               | 2026-05-28 |            5.00 |        3.33 |           66.55
+      115 | ENU-118-XB   | Yaba                | 2024-12-30 |            5.00 |        3.27 |           65.50
+      188 | LAG-708-XZ   | Yaba                | 2026-05-25 |            5.00 |        3.22 |           64.41
+      394 | ENU-118-XB   | Surulere            | 2026-04-07 |            5.00 |        3.20 |           64.05
+      137 | ENU-118-XB   | Yaba                | 2025-06-02 |            5.00 |        3.13 |           62.64
+      457 | ENU-118-XB   | Independence Layout | 2025-06-06 |            5.00 |        3.13 |           62.56
+       30 | ENU-118-XB   | Lekki               | 2025-06-04 |            5.00 |        3.04 |           60.76
+      343 | LAG-471-XA   | Surulere            | 2025-04-15 |            5.00 |        3.01 |           60.23
+      508 | LAG-708-XZ   | Independence Layout | 2026-05-29 |            5.00 |        3.01 |           60.16
+       81 | LAG-708-XZ   | Lekki               | 2026-05-27 |            5.00 |        2.97 |           59.48
+      556 | LAG-471-XA   | New Haven           | 2025-04-19 |            5.00 |        2.92 |           58.46
+      288 | ENU-118-XB   | Ikeja               | 2026-04-09 |            5.00 |        2.92 |           58.40
+       74 | ENU-118-XB   | Lekki               | 2026-04-08 |            5.00 |        2.88 |           57.61
+      181 | ENU-118-XB   | Yaba                | 2026-04-06 |            5.00 |        2.88 |           57.51
+      350 | ENU-118-XB   | Surulere            | 2025-06-03 |            5.00 |        2.82 |           56.33
+      614 | LAG-708-XZ   | New Haven           | 2026-05-30 |            5.00 |        2.79 |           55.71
+      401 | LAG-708-XZ   | Surulere            | 2026-05-26 |            5.00 |        2.78 |           55.55
+       23 | LAG-471-XA   | Lekki               | 2025-04-16 |            5.00 |        2.77 |           55.39
+      563 | ENU-118-XB   | New Haven           | 2025-06-07 |            5.00 |        2.76 |           55.12
+      450 | LAG-471-XA   | Independence Layout | 2025-04-18 |            5.00 |        2.75 |           55.10
+      244 | ENU-118-XB   | Ikeja               | 2025-06-05 |            5.00 |        2.75 |           55.01
+      114 | LAG-044-XL   | Yaba                | 2024-12-23 |            7.00 |        3.83 |           54.78
+      501 | ENU-118-XB   | Independence Layout | 2026-04-10 |            5.00 |        2.66 |           53.18
+      237 | LAG-471-XA   | Ikeja               | 2025-04-17 |            5.00 |        2.65 |           52.95
+      221 | LAG-044-XL   | Ikeja               | 2024-12-26 |            7.00 |        3.68 |           52.61
+        7 | LAG-044-XL   | Lekki               | 2024-12-25 |            7.00 |        3.65 |           52.14
+      327 | LAG-044-XL   | Surulere            | 2024-12-24 |            7.00 |        3.63 |           51.88
+      434 | LAG-044-XL   | Independence Layout | 2024-12-27 |            7.00 |        3.58 |           51.18
+      380 | LAG-812-XR   | Surulere            | 2025-12-30 |            7.00 |        3.40 |           48.58
+      540 | LAG-044-XL   | New Haven           | 2024-12-28 |            7.00 |        3.35 |           47.91
+      167 | LAG-812-XR   | Yaba                | 2025-12-29 |            7.00 |        3.20 |           45.67
+      138 | ENU-237-XY   | Yaba                | 2025-06-09 |            7.00 |        3.11 |           44.44
+      238 | LAG-529-XP   | Ikeja               | 2025-04-24 |            7.00 |        3.08 |           44.01
+       73 | LAG-044-XL   | Lekki               | 2026-04-01 |            7.00 |        3.06 |           43.68
+      344 | LAG-529-XP   | Surulere            | 2025-04-22 |            7.00 |        3.04 |           43.49
+      189 | LAG-812-XR   | Yaba                | 2026-06-01 |            7.00 |        3.02 |           43.19
+       31 | ENU-237-XY   | Lekki               | 2025-06-11 |            7.00 |        3.00 |           42.93
+      108 | LAG-471-XA   | Yaba                | 2024-11-11 |            5.00 |        2.14 |           42.89
+      606 | LAG-044-XL   | New Haven           | 2026-04-04 |            7.00 |        3.00 |           42.84
+      393 | LAG-044-XL   | Surulere            | 2026-03-31 |            7.00 |        2.98 |           42.60
+      625 | LAG-708-XZ   | New Haven           | 2026-08-15 |            5.00 |        2.12 |           42.39
+       41 | ENU-118-XB   | Lekki               | 2025-08-20 |            5.00 |        2.04 |           40.79
+      500 | LAG-044-XL   | Independence Layout | 2026-04-03 |            7.00 |        2.84 |           40.52
+      192 | ENU-118-XB   | Yaba                | 2026-06-22 |            5.00 |        2.02 |           40.49
+(50 rows)
+
+==> Q6: customers with unpaid bills
+        name        |     phone      |        zone         | unpaid_total_naira 
+--------------------+----------------+---------------------+--------------------
+ Sani Okafor        | +2348010000090 | Yaba                |          175000.00
+ Sani Olatunji      | +2348010000290 | Surulere            |          175000.00
+ Mary Okafor        | +2348010000270 | Surulere            |          150000.00
+ Mary Olatunji      | +2348010000350 | Independence Layout |          150000.00
+ Chinedu Olatunji   | +2348010000440 | New Haven           |          150000.00
+ Hauwa Olawale      | +2348010000215 | Ikeja               |          150000.00
+ Sani Okonkwo       | +2348010000010 | Lekki               |          150000.00
+ Amina Okonkwo      | +2348010000100 | Yaba                |          150000.00
+ Chinedu Okafor     | +2348010000240 | Ikeja               |          125000.00
+ Hauwa Nnamdi       | +2348010000055 | Lekki               |          125000.00
+ Tunde Nnamdi       | +2348010000205 | Ikeja               |          125000.00
+ Uche Nnamdi        | +2348010000355 | Independence Layout |          125000.00
+ Femi Olawale       | +2348010000185 | Ikeja               |          125000.00
+ Uche Adeleke       | +2348010000075 | Lekki               |          125000.00
+ Amina Olatunji     | +2348010000380 | Independence Layout |          125000.00
+ Hauwa Olawale      | +2348010000095 | Yaba                |          125000.00
+ Chinedu Okonkwo    | +2348010000160 | Yaba                |          125000.00
+ Chinedu Olatunji   | +2348010000080 | Lekki               |          125000.00
+ Tunde Olawale      | +2348010000245 | Surulere            |          125000.00
+ Femi Adeleke       | +2348010000225 | Ikeja               |          100000.00
+ Mary Olatunji      | +2348010000230 | Ikeja               |          100000.00
+ Femi Nnamdi        | +2348010000265 | Surulere            |          100000.00
+ Femi Nnamdi        | +2348010000025 | Lekki               |          100000.00
+ Amina Okafor       | +2348010000420 | New Haven           |          100000.00
+ Femi Olawale       | +2348010000065 | Lekki               |          100000.00
+ Tunde Adeleke      | +2348010000405 | New Haven           |          100000.00
+ Uche Nnamdi        | +2348010000115 | Yaba                |          100000.00
+ Hauwa Adeleke      | +2348010000255 | Surulere            |          100000.00
+ Uche Olawale       | +2348010000035 | Lekki               |          100000.00
+ Tunde Adeleke      | +2348010000045 | Lekki               |          100000.00
+ Amina Okafor       | +2348010000180 | Ikeja               |          100000.00
+ Tunde Olawale      | +2348010000005 | Lekki               |          100000.00
+ Hauwa Olawale      | +2348010000455 | New Haven           |          100000.00
+ Sani Okafor        | +2348010000450 | New Haven           |          100000.00
+ Sani Okonkwo       | +2348010000130 | Yaba                |          100000.00
+ Sani Okonkwo       | +2348010000250 | Surulere            |          100000.00
+ Tope Eze           | +2348010000153 | Yaba                |           96000.00
+ Bayo Suleiman      | +2348010000429 | New Haven           |           96000.00
+ Bayo Suleiman      | +2348010000309 | Surulere            |           84000.00
+ Joy Mohammed       | +2348010000306 | Surulere            |           84000.00
+ Bola Eze           | +2348010000207 | Ikeja               |           84000.00
+ Hauwa Nnamdi       | +2348010000295 | Surulere            |           75000.00
+ Sani Olatunji      | +2348010000050 | Lekki               |           75000.00
+ Tunde Olawale      | +2348010000365 | Independence Layout |           75000.00
+ Tunde Nnamdi       | +2348010000445 | New Haven           |           75000.00
+ Chinedu Okonkwo    | +2348010000040 | Lekki               |           75000.00
+ Hauwa Olawale      | +2348010000335 | Independence Layout |           75000.00
+ Uche Olawale       | +2348010000275 | Surulere            |           75000.00
+ Hauwa Nnamdi       | +2348010000175 | Ikeja               |           75000.00
+ Sani Olatunji      | +2348010000410 | New Haven           |           75000.00
+ Tunde Olawale      | +2348010000125 | Yaba                |           75000.00
+ Mary Okonkwo       | +2348010000070 | Lekki               |           75000.00
+ Amina Okafor       | +2348010000060 | Lekki               |           75000.00
+ Tunde Nnamdi       | +2348010000325 | Independence Layout |           75000.00
+ Tunde Adeleke      | +2348010000285 | Surulere            |           75000.00
+ Femi Olawale       | +2348010000425 | New Haven           |           75000.00
+ Sani Okonkwo       | +2348010000370 | Independence Layout |           75000.00
+ Chinedu Okonkwo    | +2348010000400 | Independence Layout |           75000.00
+ Amina Olatunji     | +2348010000020 | Lekki               |           75000.00
+ Uche Adeleke       | +2348010000195 | Ikeja               |           75000.00
+ Femi Nnamdi        | +2348010000385 | Independence Layout |           75000.00
+ Uche Nnamdi        | +2348010000235 | Ikeja               |           75000.00
+ Uche Olawale       | +2348010000155 | Yaba                |           75000.00
+ Mary Okafor        | +2348010000390 | Independence Layout |           75000.00
+ Amina Okafor       | +2348010000300 | Surulere            |           75000.00
+ Sani Okafor        | +2348010000210 | Ikeja               |           75000.00
+ Tunde Adeleke      | +2348010000165 | Ikeja               |           75000.00
+ Sani Olatunji      | +2348010000170 | Ikeja               |           75000.00
+ Fatima Dauda       | +2348010000324 | Independence Layout |           72000.00
+ Bayo Suleiman      | +2348010000189 | Ikeja               |           72000.00
+ Ebere Abubakar     | +2348010000462 | New Haven           |           72000.00
+ Fatima Dauda       | +2348010000204 | Ikeja               |           72000.00
+ Musa Ogunleye      | +2348010000018 | Lekki               |           72000.00
+ Yetunde Eze        | +2348010000417 | New Haven           |           72000.00
+ Kunle Dauda        | +2348010000054 | Lekki               |           72000.00
+ Yakubu Ogunleye    | +2348010000408 | New Haven           |           60000.00
+ Kunle Dauda        | +2348010000414 | New Haven           |           60000.00
+ Seyi Eze           | +2348010000303 | Surulere            |           60000.00
+ Fatima Dauda       | +2348010000444 | New Haven           |           60000.00
+ Bayo Suleiman      | +2348010000069 | Lekki               |           60000.00
+ Fatima Dauda       | +2348010000084 | Yaba                |           60000.00
+ Zainab Dauda       | +2348010000384 | Independence Layout |           60000.00
+ Halima Dauda       | +2348010000114 | Yaba                |           60000.00
+ Chuka Suleiman     | +2348010000159 | Yaba                |           60000.00
+ Ibrahim Abubakar   | +2348010000372 | Independence Layout |           60000.00
+ Danjuma Haruna     | +2348010000231 | Ikeja               |           60000.00
+ Bisi Mohammed      | +2348010000036 | Lekki               |           60000.00
+ Amara Ogunleye     | +2348010000318 | Surulere            |           60000.00
+ Bisi Mohammed      | +2348010000396 | Independence Layout |           60000.00
+ Adaeze Suleiman    | +2348010000129 | Yaba                |           60000.00
+ Joy Mohammed       | +2348010000426 | New Haven           |           60000.00
+ Danjuma Haruna     | +2348010000111 | Yaba                |           60000.00
+ Yusuf Eze          | +2348010000357 | Independence Layout |           60000.00
+ Amara Ogunleye     | +2348010000078 | Lekki               |           60000.00
+ Seyi Eze           | +2348010000063 | Lekki               |           60000.00
+ Helen Ogunleye     | +2348010000108 | Yaba                |           60000.00
+ David Haruna       | +2348010000141 | Yaba                |           60000.00
+ Oluwaseun Haruna   | +2348010000201 | Ikeja               |           60000.00
+ Ebere Ibrahim      | +2348010000062 | Lekki               |           56000.00
+ Yetunde Nwosu      | +2348010000337 | Independence Layout |           56000.00
+ Ebere Igbokwe      | +2348010000142 | Yaba                |           56000.00
+ Uche Adeleke       | +2348010000315 | Surulere            |           50000.00
+ Mary Okafor        | +2348010000030 | Lekki               |           50000.00
+ Femi Olawale       | +2348010000305 | Surulere            |           50000.00
+ Mary Okonkwo       | +2348010000190 | Ikeja               |           50000.00
+ Amina Okonkwo      | +2348010000220 | Ikeja               |           50000.00
+ Chinedu Okafor     | +2348010000360 | Independence Layout |           50000.00
+ Chinedu Okonkwo    | +2348010000280 | Surulere            |           50000.00
+ Chinedu Olatunji   | +2348010000200 | Ikeja               |           50000.00
+ Mary Olatunji      | +2348010000470 | New Haven           |           50000.00
+ Mary Olatunji      | +2348010000110 | Yaba                |           50000.00
+ Hauwa Nnamdi       | +2348010000415 | New Haven           |           50000.00
+ Femi Nnamdi        | +2348010000145 | Yaba                |           50000.00
+ Amina Okonkwo      | +2348010000340 | Independence Layout |           50000.00
+ Femi Adeleke       | +2348010000465 | New Haven           |           50000.00
+ Chinedu Okafor     | +2348010000120 | Yaba                |           50000.00
+ Hauwa Adeleke      | +2348010000135 | Yaba                |           50000.00
+ Chinedu Okafor     | +2348010000480 | New Haven           |           50000.00
+ Amina Okonkwo      | +2348010000460 | New Haven           |           50000.00
+ Amina Olatunji     | +2348010000260 | Surulere            |           50000.00
+ Uche Nnamdi        | +2348010000475 | New Haven           |           50000.00
+ Chinedu Olatunji   | +2348010000320 | Surulere            |           50000.00
+ Mary Okonkwo       | +2348010000310 | Surulere            |           50000.00
+ Bola Eze           | +2348010000327 | Independence Layout |           48000.00
+ Danjuma Haruna     | +2348010000351 | Independence Layout |           48000.00
+ Tobi Musa          | +2348010000419 | New Haven           |           48000.00
+ Yetunde Eze        | +2348010000057 | Lekki               |           48000.00
+ Obinna Mohammed    | +2348010000096 | Yaba                |           48000.00
+ Ibrahim Abubakar   | +2348010000132 | Yaba                |           48000.00
+ Aisha Abubakar     | +2348010000402 | New Haven           |           48000.00
+ Ngozi Mohammed     | +2348010000246 | Surulere            |           48000.00
+ Seyi Eze           | +2348010000183 | Ikeja               |           48000.00
+ Halima Bello       | +2348010000034 | Lekki               |           48000.00
+ Adaeze Suleiman    | +2348010000369 | Independence Layout |           48000.00
+ Halima Bello       | +2348010000154 | Yaba                |           48000.00
+ Musa Ogunleye      | +2348010000378 | Independence Layout |           48000.00
+ Kunle Bello        | +2348010000334 | Independence Layout |           48000.00
+ Helen Ogunleye     | +2348010000468 | New Haven           |           48000.00
+ Zainab Dauda       | +2348010000264 | Surulere            |           48000.00
+ Yakubu Adebayo     | +2348010000368 | Independence Layout |           48000.00
+ Bayo Musa          | +2348010000269 | Surulere            |           48000.00
+ Ebere Abubakar     | +2348010000102 | Yaba                |           48000.00
+ Obinna Mohammed    | +2348010000336 | Independence Layout |           48000.00
+ Kunle Bello        | +2348010000094 | Yaba                |           48000.00
+ Ngozi Ojo          | +2348010000406 | New Haven           |           48000.00
+ Zainab Bello       | +2348010000304 | Surulere            |           48000.00
+ Zainab Lawal       | +2348010000464 | New Haven           |           48000.00
+ Amara Ogunleye     | +2348010000438 | New Haven           |           48000.00
+ Kunle Bello        | +2348010000454 | New Haven           |           48000.00
+ Adaeze Suleiman    | +2348010000009 | Lekki               |           48000.00
+ Oluwaseun Adesanya | +2348010000401 | New Haven           |           48000.00
+ Oluwaseun Haruna   | +2348010000441 | New Haven           |           48000.00
+ Adaeze Musa        | +2348010000449 | New Haven           |           48000.00
+ Chioma Eze         | +2348010000333 | Independence Layout |           48000.00
+ Danjuma Adeyemi    | +2348010000031 | Lekki               |           48000.00
+ Chioma Oyebola     | +2348010000173 | Ikeja               |           48000.00
+ Funke Adesanya     | +2348010000131 | Yaba                |           48000.00
+ Musa Uche          | +2348010000418 | New Haven           |           48000.00
+ Tope Eze           | +2348010000273 | Surulere            |           48000.00
+ Tope Eze           | +2348010000393 | Independence Layout |           48000.00
+ Obinna Ojo         | +2348010000136 | Yaba                |           48000.00
+ Yetunde Eze        | +2348010000297 | Surulere            |           48000.00
+ Helen Uche         | +2348010000268 | Surulere            |           48000.00
+ Yetunde Eze        | +2348010000177 | Ikeja               |           48000.00
+ Adaeze Suleiman    | +2348010000249 | Surulere            |           48000.00
+ Yusuf Eze          | +2348010000237 | Ikeja               |           48000.00
+ Bola Eze           | +2348010000087 | Yaba                |           48000.00
+ Halima Dauda       | +2348010000354 | Independence Layout |           48000.00
+ Joy Ojo            | +2348010000346 | Independence Layout |           48000.00
+ Ngozi Ojo          | +2348010000166 | Ikeja               |           48000.00
+ Yusuf Onyeka       | +2348010000197 | Ikeja               |           48000.00
+ Kunle Dauda        | +2348010000174 | Ikeja               |           48000.00
+ Amara Uche         | +2348010000238 | Ikeja               |           40000.00
+ Tobi Musa          | +2348010000299 | Surulere            |           40000.00
+ Bisi Ojo           | +2348010000196 | Ikeja               |           40000.00
+ Obinna Bali        | +2348010000056 | Lekki               |           40000.00
+ Amara Uche         | +2348010000118 | Yaba                |           40000.00
+ Joy Bali           | +2348010000386 | Independence Layout |           40000.00
+ Ibrahim Igbokwe    | +2348010000172 | Ikeja               |           40000.00
+ Helen Adebayo      | +2348010000068 | Lekki               |           40000.00
+ Chioma Okeke       | +2348010000133 | Yaba                |           40000.00
+ David Adesanya     | +2348010000221 | Ikeja               |           40000.00
+ Bola Onyeka        | +2348010000167 | Ikeja               |           40000.00
+ Tope Okeke         | +2348010000073 | Lekki               |           40000.00
+ Tobi Musa          | +2348010000059 | Lekki               |           40000.00
+ Obinna Bali        | +2348010000296 | Surulere            |           40000.00
+ Chuka Salami       | +2348010000199 | Ikeja               |           40000.00
+ Chioma Oyebola     | +2348010000293 | Surulere            |           40000.00
+ Amara Uche         | +2348010000358 | Independence Layout |           40000.00
+ Halima Lawal       | +2348010000314 | Surulere            |           40000.00
+ Obinna Bali        | +2348010000416 | New Haven           |           40000.00
+ Danjuma Adesanya   | +2348010000431 | New Haven           |           40000.00
+ Musa Uche          | +2348010000298 | Surulere            |           40000.00
+ Oluwaseun Adeyemi  | +2348010000361 | Independence Layout |           40000.00
+ Aisha Ibrahim      | +2348010000242 | Surulere            |           40000.00
+ Adaeze Salami      | +2348010000409 | New Haven           |           40000.00
+ Ifeanyi Nwosu      | +2348010000067 | Lekki               |           40000.00
+ Ifeanyi Onyeka     | +2348010000467 | New Haven           |           40000.00
+ Fatima Bello       | +2348010000124 | Yaba                |           40000.00
+ Bayo Salami        | +2348010000469 | New Haven           |           40000.00
+ Bola Onyeka        | +2348010000047 | Lekki               |           40000.00
+ Ebere Abubakar     | +2348010000222 | Ikeja               |           36000.00
+ Joy Mohammed       | +2348010000066 | Lekki               |           36000.00
+ Ibrahim Abubakar   | +2348010000012 | Lekki               |           36000.00
+ Tobi Suleiman      | +2348010000459 | New Haven           |           36000.00
+ Tobi Suleiman      | +2348010000339 | Independence Layout |           36000.00
+ David Haruna       | +2348010000261 | Surulere            |           36000.00
+ Ifeanyi Eze        | +2348010000387 | Independence Layout |           36000.00
+ Halima Dauda       | +2348010000234 | Ikeja               |           36000.00
+ Grace Abubakar     | +2348010000432 | New Haven           |           36000.00
+ Emeka Eze          | +2348010000243 | Surulere            |           36000.00
+ Emeka Eze          | +2348010000363 | Independence Layout |           36000.00
+ Aisha Abubakar     | +2348010000162 | Ikeja               |           36000.00
+ Bola Eze           | +2348010000447 | New Haven           |           36000.00
+ Yusuf Eze          | +2348010000477 | New Haven           |           36000.00
+ Oluwaseun Haruna   | +2348010000081 | Yaba                |           36000.00
+ Grace Abubakar     | +2348010000192 | Ikeja               |           36000.00
+ Chioma Eze         | +2348010000213 | Ikeja               |           36000.00
+ Yusuf Eze          | +2348010000117 | Yaba                |           36000.00
+ Tope Eze           | +2348010000033 | Lekki               |           36000.00
+ Bisi Mohammed      | +2348010000276 | Surulere            |           36000.00
+ Seyi Eze           | +2348010000423 | New Haven           |           36000.00
+ Yakubu Ogunleye    | +2348010000048 | Lekki               |           36000.00
+ Yakubu Ogunleye    | +2348010000168 | Ikeja               |           36000.00
+ Ebere Abubakar     | +2348010000342 | Independence Layout |           36000.00
+ Aisha Abubakar     | +2348010000282 | Surulere            |           36000.00
+ Ifeanyi Eze        | +2348010000147 | Yaba                |           36000.00
+ Grace Abubakar     | +2348010000072 | Lekki               |           36000.00
+ Obinna Mohammed    | +2348010000216 | Ikeja               |           36000.00
+ Emeka Eze          | +2348010000123 | Yaba                |           36000.00
+ Funke Haruna       | +2348010000411 | New Haven           |           36000.00
+ Chuka Suleiman     | +2348010000039 | Lekki               |           36000.00
+ Amara Ogunleye     | +2348010000198 | Ikeja               |           36000.00
+ Joy Mohammed       | +2348010000186 | Ikeja               |           36000.00
+ Ngozi Mohammed     | +2348010000366 | Independence Layout |           36000.00
+ Oluwaseun Haruna   | +2348010000321 | Independence Layout |           36000.00
+ Ibrahim Abubakar   | +2348010000252 | Surulere            |           36000.00
+ Helen Ogunleye     | +2348010000228 | Ikeja               |           36000.00
+ Halima Dauda       | +2348010000474 | New Haven           |           36000.00
+ Bayo Salami        | +2348010000349 | Independence Layout |           32000.00
+ Musa Adebayo       | +2348010000458 | New Haven           |           32000.00
+ Halima Bello       | +2348010000394 | Independence Layout |           32000.00
+ Ibrahim Igbokwe    | +2348010000412 | New Haven           |           32000.00
+ Helen Uche         | +2348010000388 | Independence Layout |           32000.00
+ Seyi Oyebola       | +2348010000263 | Surulere            |           32000.00
+ Helen Uche         | +2348010000028 | Lekki               |           32000.00
+ David Adesanya     | +2348010000461 | New Haven           |           32000.00
+ Halima Lawal       | +2348010000434 | New Haven           |           32000.00
+ Ebere Ibrahim      | +2348010000302 | Surulere            |           32000.00
+ Ebere Igbokwe      | +2348010000262 | Surulere            |           32000.00
+ Tobi Musa          | +2348010000179 | Ikeja               |           32000.00
+ David Adeyemi      | +2348010000421 | New Haven           |           32000.00
+ Ibrahim Ibrahim    | +2348010000452 | New Haven           |           32000.00
+ David Adeyemi      | +2348010000181 | Ikeja               |           32000.00
+ Chuka Salami       | +2348010000439 | New Haven           |           32000.00
+ Bisi Bali          | +2348010000236 | Ikeja               |           32000.00
+ Zainab Lawal       | +2348010000224 | Ikeja               |           32000.00
+ Danjuma Adeyemi    | +2348010000391 | Independence Layout |           32000.00
+ Chioma Okeke       | +2348010000253 | Surulere            |           32000.00
+ Zainab Bello       | +2348010000184 | Ikeja               |           32000.00
+ Adaeze Salami      | +2348010000049 | Lekki               |           32000.00
+ Yetunde Onyeka     | +2348010000017 | Lekki               |           32000.00
+ Fatima Bello       | +2348010000004 | Lekki               |           32000.00
+ Yetunde Onyeka     | +2348010000377 | Independence Layout |           32000.00
+ Ibrahim Ibrahim    | +2348010000092 | Yaba                |           32000.00
+ Tope Oyebola       | +2348010000473 | New Haven           |           32000.00
+ Ngozi Bali         | +2348010000446 | New Haven           |           32000.00
+ Oluwaseun Adesanya | +2348010000281 | Surulere            |           32000.00
+ Funke Adeyemi      | +2348010000091 | Yaba                |           32000.00
+ Amara Adebayo      | +2348010000278 | Surulere            |           32000.00
+ Emeka Oyebola      | +2348010000443 | New Haven           |           32000.00
+ Chioma Oyebola     | +2348010000053 | Lekki               |           32000.00
+ Bola Nwosu         | +2348010000367 | Independence Layout |           32000.00
+ Ngozi Ojo          | +2348010000046 | Lekki               |           32000.00
+ Chuka Salami       | +2348010000319 | Surulere            |           32000.00
+ Seyi Okeke         | +2348010000103 | Yaba                |           32000.00
+ Chioma Okeke       | +2348010000013 | Lekki               |           32000.00
+ Ifeanyi Nwosu      | +2348010000307 | Surulere            |           32000.00
+ Aisha Ibrahim      | +2348010000002 | Lekki               |           32000.00
+ David Adeyemi      | +2348010000061 | Lekki               |           32000.00
+ Funke Adeyemi      | +2348010000211 | Ikeja               |           32000.00
+ Yetunde Nwosu      | +2348010000097 | Yaba                |           32000.00
+ Bisi Ojo           | +2348010000316 | Surulere            |           32000.00
+ Chuka Musa         | +2348010000359 | Independence Layout |           32000.00
+ Tobi Salami        | +2348010000019 | Lekki               |           32000.00
+ David Adeyemi      | +2348010000301 | Surulere            |           32000.00
+ Ngozi Ojo          | +2348010000286 | Surulere            |           32000.00
+ Tope Okeke         | +2348010000313 | Surulere            |           32000.00
+ Grace Igbokwe      | +2348010000352 | Independence Layout |           32000.00
+ Emeka Oyebola      | +2348010000323 | Independence Layout |           32000.00
+ Joy Ojo            | +2348010000466 | New Haven           |           32000.00
+ Helen Adebayo      | +2348010000428 | New Haven           |           32000.00
+ Amara Uche         | +2348010000478 | New Haven           |           32000.00
+ Yusuf Onyeka       | +2348010000077 | Lekki               |           32000.00
+ Seyi Okeke         | +2348010000463 | New Haven           |           32000.00
+ Tope Okeke         | +2348010000433 | New Haven           |           32000.00
+ Yusuf Nwosu        | +2348010000397 | Independence Layout |           32000.00
+ Aisha Igbokwe      | +2348010000442 | New Haven           |           32000.00
+ Yakubu Adebayo     | +2348010000008 | Lekki               |           32000.00
+ Kunle Lawal        | +2348010000014 | Lekki               |           32000.00
+ Ibrahim Igbokwe    | +2348010000292 | Surulere            |           32000.00
+ Musa Uche          | +2348010000058 | Lekki               |           32000.00
+ Oluwaseun Adesanya | +2348010000161 | Ikeja               |           32000.00
+ David Adesanya     | +2348010000101 | Yaba                |           32000.00
+ Bola Onyeka        | +2348010000287 | Surulere            |           32000.00
+ Helen Adebayo      | +2348010000308 | Surulere            |           32000.00
+ Kunle Bello        | +2348010000214 | Ikeja               |           32000.00
+ Femi Adeleke       | +2348010000105 | Yaba                |           25000.00
+ Mary Okafor        | +2348010000150 | Yaba                |           25000.00
+ Hauwa Adeleke      | +2348010000375 | Independence Layout |           25000.00
+ Uche Adeleke       | +2348010000435 | New Haven           |           25000.00
+ Mary Okonkwo       | +2348010000430 | New Haven           |           25000.00
+ Sani Okafor        | +2348010000330 | Independence Layout |           25000.00
+ Tunde Nnamdi       | +2348010000085 | Yaba                |           25000.00
+ Hauwa Adeleke      | +2348010000015 | Lekki               |           25000.00
+ Uche Olawale       | +2348010000395 | Independence Layout |           25000.00
+ Amina Olatunji     | +2348010000140 | Yaba                |           25000.00
+ Femi Adeleke       | +2348010000345 | Independence Layout |           25000.00
+ Oluwaseun Adeyemi  | +2348010000241 | Surulere            |           24000.00
+ Emeka Eze          | +2348010000003 | Lekki               |           24000.00
+ Funke Adesanya     | +2348010000011 | Lekki               |           24000.00
+ Zainab Dauda       | +2348010000024 | Lekki               |           24000.00
+ Bisi Bali          | +2348010000476 | New Haven           |           24000.00
+ Grace Igbokwe      | +2348010000112 | Yaba                |           24000.00
+ Yusuf Onyeka       | +2348010000317 | Surulere            |           24000.00
+ Bisi Bali          | +2348010000116 | Yaba                |           24000.00
+ Helen Ogunleye     | +2348010000348 | Independence Layout |           24000.00
+ Halima Lawal       | +2348010000074 | Lekki               |           24000.00
+ Bola Nwosu         | +2348010000247 | Surulere            |           24000.00
+ Bola Onyeka        | +2348010000407 | New Haven           |           24000.00
+ Adaeze Salami      | +2348010000289 | Surulere            |           24000.00
+ Obinna Ojo         | +2348010000016 | Lekki               |           24000.00
+ Yakubu Ogunleye    | +2348010000288 | Surulere            |           24000.00
+ Ngozi Mohammed     | +2348010000126 | Yaba                |           24000.00
+ Yusuf Nwosu        | +2348010000037 | Lekki               |           24000.00
+ Chuka Suleiman     | +2348010000279 | Surulere            |           24000.00
+ Fatima Lawal       | +2348010000044 | Lekki               |           24000.00
+ Oluwaseun Adeyemi  | +2348010000001 | Lekki               |           24000.00
+ Obinna Mohammed    | +2348010000456 | New Haven           |           24000.00
+ Danjuma Adeyemi    | +2348010000271 | Surulere            |           24000.00
+ Ngozi Bali         | +2348010000326 | Independence Layout |           24000.00
+ Chuka Musa         | +2348010000239 | Ikeja               |           24000.00
+ Joy Bali           | +2348010000146 | Yaba                |           24000.00
+ Emeka Oyebola      | +2348010000203 | Ikeja               |           24000.00
+ Grace Abubakar     | +2348010000312 | Surulere            |           24000.00
+ Ifeanyi Onyeka     | +2348010000227 | Ikeja               |           24000.00
+ Seyi Okeke         | +2348010000223 | Ikeja               |           24000.00
+ Tobi Suleiman      | +2348010000099 | Yaba                |           24000.00
+ Bisi Mohammed      | +2348010000156 | Yaba                |           24000.00
+ Kunle Dauda        | +2348010000294 | Surulere            |           24000.00
+ Chioma Oyebola     | +2348010000413 | New Haven           |           24000.00
+ Ebere Ibrahim      | +2348010000182 | Ikeja               |           24000.00
+ David Haruna       | +2348010000021 | Lekki               |           24000.00
+ Tobi Suleiman      | +2348010000219 | Ikeja               |           24000.00
+ Ngozi Mohammed     | +2348010000006 | Lekki               |           24000.00
+ Ngozi Bali         | +2348010000206 | Ikeja               |           24000.00
+ Tobi Salami        | +2348010000259 | Surulere            |           24000.00
+ Halima Bello       | +2348010000274 | Surulere            |           24000.00
+ Danjuma Adesanya   | +2348010000311 | Surulere            |           24000.00
+ Funke Haruna       | +2348010000171 | Ikeja               |           24000.00
+ Fatima Lawal       | +2348010000404 | New Haven           |           24000.00
+ Yetunde Nwosu      | +2348010000457 | New Haven           |           24000.00
+ Danjuma Haruna     | +2348010000471 | New Haven           |           24000.00
+ Fatima Bello       | +2348010000244 | Surulere            |           24000.00
+ Grace Ibrahim      | +2348010000152 | Yaba                |           24000.00
+ Yusuf Nwosu        | +2348010000277 | Surulere            |           24000.00
+ Obinna Ojo         | +2348010000256 | Surulere            |           24000.00
+ Bayo Salami        | +2348010000229 | Ikeja               |           24000.00
+ Zainab Dauda       | +2348010000144 | Yaba                |           24000.00
+ Oluwaseun Adesanya | +2348010000041 | Lekki               |           24000.00
+ Aisha Igbokwe      | +2348010000322 | Independence Layout |           24000.00
+ Ebere Igbokwe      | +2348010000382 | Independence Layout |           24000.00
+ Adaeze Musa        | +2348010000089 | Yaba                |           24000.00
+ Yusuf Nwosu        | +2348010000157 | Yaba                |           24000.00
+ Seyi Oyebola       | +2348010000383 | Independence Layout |           24000.00
+ Funke Haruna       | +2348010000051 | Lekki               |           24000.00
+ Fatima Lawal       | +2348010000284 | Surulere            |           24000.00
+ Kunle Lawal        | +2348010000374 | Independence Layout |           24000.00
+ Bola Nwosu         | +2348010000127 | Yaba                |           24000.00
+ Tope Oyebola       | +2348010000233 | Ikeja               |           24000.00
+ Tope Oyebola       | +2348010000353 | Independence Layout |           24000.00
+ Aisha Abubakar     | +2348010000042 | Lekki               |           24000.00
+ David Haruna       | +2348010000381 | Independence Layout |           24000.00
+ Musa Ogunleye      | +2348010000138 | Yaba                |           24000.00
+ Chioma Eze         | +2348010000453 | New Haven           |           24000.00
+ Emeka Okeke        | +2348010000283 | Surulere            |           24000.00
+ Bola Nwosu         | +2348010000007 | Lekki               |           24000.00
+ Seyi Oyebola       | +2348010000023 | Lekki               |           24000.00
+ Musa Adebayo       | +2348010000338 | Independence Layout |           24000.00
+ Ifeanyi Onyeka     | +2348010000107 | Yaba                |           24000.00
+ Bisi Ojo           | +2348010000436 | New Haven           |           24000.00
+ Musa Adebayo       | +2348010000098 | Yaba                |           24000.00
+ Helen Adebayo      | +2348010000188 | Ikeja               |           24000.00
+ Ebere Ibrahim      | +2348010000422 | New Haven           |           24000.00
+ Tope Okeke         | +2348010000193 | Ikeja               |           24000.00
+ Zainab Lawal       | +2348010000104 | Yaba                |           24000.00
+ Yakubu Uche        | +2348010000088 | Yaba                |           24000.00
+ Chioma Eze         | +2348010000093 | Yaba                |           24000.00
+ Obinna Bali        | +2348010000176 | Ikeja               |           24000.00
+ Yakubu Uche        | +2348010000208 | Ikeja               |           24000.00
+ Kunle Lawal        | +2348010000254 | Surulere            |           24000.00
+ Aisha Ibrahim      | +2348010000122 | Yaba                |           24000.00
+ Aisha Igbokwe      | +2348010000202 | Ikeja               |           24000.00
+ Joy Ojo            | +2348010000106 | Yaba                |           16000.00
+ Bayo Musa          | +2348010000149 | Yaba                |           16000.00
+ Adaeze Salami      | +2348010000169 | Ikeja               |           16000.00
+ Ibrahim Igbokwe    | +2348010000052 | Lekki               |           16000.00
+ Danjuma Adesanya   | +2348010000191 | Ikeja               |           16000.00
+ Emeka Okeke        | +2348010000163 | Ikeja               |           16000.00
+ Grace Ibrahim      | +2348010000272 | Surulere            |           16000.00
+ Adaeze Musa        | +2348010000329 | Independence Layout |           16000.00
+ Tobi Salami        | +2348010000379 | Independence Layout |           16000.00
+ Helen Uche         | +2348010000148 | Yaba                |           16000.00
+ Yakubu Adebayo     | +2348010000128 | Yaba                |           16000.00
+ Yakubu Uche        | +2348010000328 | Independence Layout |           16000.00
+ Yetunde Nwosu      | +2348010000217 | Ikeja               |           16000.00
+ Emeka Okeke        | +2348010000043 | Lekki               |           16000.00
+ Amara Adebayo      | +2348010000158 | Yaba                |           16000.00
+ Ebere Igbokwe      | +2348010000022 | Lekki               |           16000.00
+ Joy Ojo            | +2348010000226 | Ikeja               |           16000.00
+ Seyi Oyebola       | +2348010000143 | Yaba                |           16000.00
+ Grace Ibrahim      | +2348010000032 | Lekki               |           16000.00
+ Halima Lawal       | +2348010000194 | Ikeja               |           16000.00
+ Funke Adeyemi      | +2348010000331 | Independence Layout |           16000.00
+ Musa Adebayo       | +2348010000218 | Ikeja               |           16000.00
+ Yakubu Uche        | +2348010000448 | New Haven           |           16000.00
+ Ibrahim Ibrahim    | +2348010000212 | Ikeja               |           16000.00
+ Fatima Lawal       | +2348010000164 | Ikeja               |           16000.00
+ David Adesanya     | +2348010000341 | Independence Layout |           16000.00
+ Zainab Bello       | +2348010000064 | Lekki               |           16000.00
+ Yusuf Onyeka       | +2348010000437 | New Haven           |           16000.00
+ Bayo Salami        | +2348010000109 | Yaba                |           16000.00
+ Oluwaseun Adeyemi  | +2348010000121 | Yaba                |           16000.00
+ Danjuma Adesanya   | +2348010000071 | Lekki               |           16000.00
+ Emeka Oyebola      | +2348010000083 | Yaba                |           16000.00
+ Ibrahim Ibrahim    | +2348010000332 | Independence Layout |           16000.00
+ Funke Adeyemi      | +2348010000451 | New Haven           |           16000.00
+ Yakubu Adebayo     | +2348010000248 | Surulere            |           16000.00
+ Bisi Ojo           | +2348010000076 | Lekki               |           16000.00
+ Amara Adebayo      | +2348010000038 | Lekki               |           16000.00
+ Joy Bali           | +2348010000266 | Surulere            |           16000.00
+ Chioma Okeke       | +2348010000373 | Independence Layout |           16000.00
+ Musa Uche          | +2348010000178 | Ikeja               |           16000.00
+ Ifeanyi Onyeka     | +2348010000347 | Independence Layout |           16000.00
+ Joy Bali           | +2348010000026 | Lekki               |           16000.00
+ Bayo Musa          | +2348010000389 | Independence Layout |           16000.00
+ Bayo Musa          | +2348010000029 | Lekki               |           16000.00
+ Chuka Salami       | +2348010000079 | Lekki               |           16000.00
+ Chuka Musa         | +2348010000119 | Yaba                |           16000.00
+ Kunle Lawal        | +2348010000134 | Yaba                |           16000.00
+ Funke Adesanya     | +2348010000371 | Independence Layout |           16000.00
+ Yetunde Onyeka     | +2348010000257 | Surulere            |           16000.00
+ Tope Oyebola       | +2348010000113 | Yaba                |           16000.00
+ Funke Adesanya     | +2348010000251 | Surulere            |           16000.00
+ Zainab Lawal       | +2348010000344 | Independence Layout |           16000.00
+ Grace Igbokwe      | +2348010000232 | Ikeja               |           16000.00
+ Ifeanyi Eze        | +2348010000027 | Lekki               |           12000.00
+ Chuka Suleiman     | +2348010000399 | Independence Layout |           12000.00
+ Ifeanyi Eze        | +2348010000267 | Surulere            |           12000.00
+ Funke Haruna       | +2348010000291 | Surulere            |           12000.00
+ Musa Ogunleye      | +2348010000258 | Surulere            |           12000.00
+ Fatima Bello       | +2348010000364 | Independence Layout |            8000.00
+ Amara Adebayo      | +2348010000398 | Independence Layout |            8000.00
+ Seyi Okeke         | +2348010000343 | Independence Layout |            8000.00
+ Adaeze Musa        | +2348010000209 | Ikeja               |            8000.00
+ Emeka Okeke        | +2348010000403 | New Haven           |            8000.00
+ Grace Igbokwe      | +2348010000472 | New Haven           |            8000.00
+ Danjuma Adeyemi    | +2348010000151 | Yaba                |            8000.00
+ Yetunde Onyeka     | +2348010000137 | Yaba                |            8000.00
+ Grace Ibrahim      | +2348010000392 | Independence Layout |            8000.00
+ Aisha Igbokwe      | +2348010000082 | Yaba                |            8000.00
+ Zainab Bello       | +2348010000424 | New Haven           |            8000.00
+ Tobi Salami        | +2348010000139 | Yaba                |            8000.00
+ Ifeanyi Nwosu      | +2348010000427 | New Haven           |            8000.00
+ Chuka Musa         | +2348010000479 | New Haven           |            8000.00
+ Ifeanyi Nwosu      | +2348010000187 | Ikeja               |            8000.00
+ Bisi Bali          | +2348010000356 | Independence Layout |            8000.00
+ Aisha Ibrahim      | +2348010000362 | Independence Layout |            8000.00
+ Obinna Ojo         | +2348010000376 | Independence Layout |            8000.00
+ Ngozi Bali         | +2348010000086 | Yaba                |            8000.00
+(480 rows)
+
+==> Q7: average collection weight per waste type
+ waste_type | avg_weight_kg | records 
+------------+---------------+---------
+ general    |         23.43 |   50980
+(1 row)
+
+==> Q8: monthly revenue (collected vs billed, in Naira)
+  month  | collected_naira | billed_naira 
+---------+-----------------+--------------
+ 2026-11 |            0.00 |   5984000.00
+ 2026-10 |      5439000.00 |   5984000.00
+ 2026-09 |      5302000.00 |   5984000.00
+ 2026-08 |      5422000.00 |   5984000.00
+ 2026-07 |      5307000.00 |   5984000.00
+ 2026-06 |      5468000.00 |   5984000.00
+ 2026-05 |      5539000.00 |   5984000.00
+ 2026-04 |      5321000.00 |   5984000.00
+ 2026-03 |      5413000.00 |   5984000.00
+ 2026-02 |      5222000.00 |   5984000.00
+ 2026-01 |      5427000.00 |   5984000.00
+ 2025-12 |      5309000.00 |   5984000.00
+ 2025-11 |      5400000.00 |   5984000.00
+ 2025-10 |      5431000.00 |   5984000.00
+ 2025-09 |      5426000.00 |   5984000.00
+ 2025-08 |      5282000.00 |   5984000.00
+ 2025-07 |      5284000.00 |   5984000.00
+ 2025-06 |      5313000.00 |   5984000.00
+ 2025-05 |      5399000.00 |   5984000.00
+ 2025-04 |      5456000.00 |   5984000.00
+ 2025-03 |      5450000.00 |   5984000.00
+ 2025-02 |      5302000.00 |   5984000.00
+ 2025-01 |      5522000.00 |   5984000.00
+ 2024-12 |      5302000.00 |   5984000.00
+ 2024-11 |      5487000.00 |   5984000.00
+(25 rows)
+
+==> BEFORE optimisation indexes: EXPLAIN ANALYZE -> /workspaces/ikejiofor_ozioma_301835195/portfolio-2-query-optimisation/p2_explain_BEFORE.txt
+    saved: /workspaces/ikejiofor_ozioma_301835195/portfolio-2-query-optimisation/p2_explain_BEFORE.txt
+==> creating optimisation indexes
+==> creating optimisation indexes (run this AFTER the BEFORE EXPLAIN ANALYZE pass)
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+==> index list:
+                       List of relations
+ Schema |           Name            | Type  |  Owner   | Table  
+--------+---------------------------+-------+----------+--------
+ public | idx_pickup_open_zone_date | index | postgres | pickup
+(1 row)
+
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-2-query-optimisation/create_indexes.sql:33: warning: \di: extra argument "idx_shift_zone_date_truck" ignored
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-2-query-optimisation/create_indexes.sql:33: warning: \di: extra argument "idx_collection_shift_waste" ignored
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-2-query-optimisation/create_indexes.sql:33: warning: \di: extra argument "idx_pickup_missed_zone" ignored
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-2-query-optimisation/create_indexes.sql:33: warning: \di: extra argument "idx_payment_unpaid_customer" ignored
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-2-query-optimisation/create_indexes.sql:33: warning: \di: extra argument "idx_payment_month_status" ignored
+==> AFTER optimisation indexes: EXPLAIN ANALYZE -> /workspaces/ikejiofor_ozioma_301835195/portfolio-2-query-optimisation/p2_explain_AFTER.txt
+    saved: /workspaces/ikejiofor_ozioma_301835195/portfolio-2-query-optimisation/p2_explain_AFTER.txt
+==> BEFORE vs AFTER summary (read straight from the two EXPLAIN ANALYZE files) -> /workspaces/ikejiofor_ozioma_301835195/portfolio-2-query-optimisation/p2_summary.txt
+Q   | BEFORE: scan on fact table                         ms | AFTER: scan on fact table                                              ms | change
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Q1  | Bitmap Heap Scan on pickup                      2.785 | Index Only Scan on pickup (idx_pickup_open_zone_date)               0.325 | -88%
+Q2  | Seq Scan on collection_record                  63.538 | Seq Scan on collection_record                                      59.954 | -6%
+Q3  | Seq Scan on collection_record                  26.202 | Seq Scan on collection_record                                      28.273 | +8%
+Q4  | Seq Scan on pickup                             23.386 | Seq Scan on pickup                                                 21.608 | -8%
+Q5  | Index Scan on shift (shift_pkey)               57.543 | Index Scan on shift (shift_pkey)                                   99.528 | +73%
+Q6  | Bitmap Heap Scan on payment                     2.039 | Bitmap Heap Scan on payment                                         3.285 | +61%
+Q7  | Seq Scan on collection_record                  11.377 | Seq Scan on collection_record                                      21.917 | +93%
+Q8  | Seq Scan on payment                             3.063 | Seq Scan on payment                                                12.642 | +313%
+
+Negative change = faster after the index. Small tables or whole-table aggregates keep a Seq Scan (that is the correct plan: an index cannot help when most rows are needed).
+==> P2 DONE
+    evidence: p2_explain_BEFORE.txt, p2_explain_AFTER.txt, p2_summary.txt (all real, from this run)
