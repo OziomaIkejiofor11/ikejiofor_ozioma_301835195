@@ -1,0 +1,97 @@
+==============================================================================
+MIT 8103 - Portfolio 3 - concurrency demos (real two-session run)
+started: 2026-11-11 21:52:10   zone_id=1  shiftA=643  shiftB=644
+==============================================================================
+
+PART 1 - THE BUG: both drivers read the same OPEN pickup, then both UPDATE it blindly
+  A1 read : SELECT pickup_id FROM pickup WHERE status='OPEN' AND zone_id=1 AND scheduled_date<=CURRENT_DATE ORDER BY requested_at LIMIT 1
+        -> [(54105,)]
+  B1 read : SELECT pickup_id FROM pickup WHERE status='OPEN' AND zone_id=1 AND scheduled_date<=CURRENT_DATE ORDER BY requested_at LIMIT 1
+        -> [(54105,)]
+  >>> both sessions picked pickup_id 54105; same row = True
+  A2 write: UPDATE pickup SET status='ASSIGNED', shift_id=643 WHERE pickup_id=54105
+        -> rowcount = 1
+  A3: COMMIT
+  B2 write: UPDATE pickup SET status='ASSIGNED', shift_id=644 WHERE pickup_id=54105
+        -> rowcount = 1
+  B3: COMMIT
+  verify  : SELECT pickup_id, status, shift_id FROM pickup WHERE pickup_id=54105
+        -> [(54105, 'ASSIGNED', 644)]
+  RESULT: both UPDATEs reported success, final shift_id=644 (shift B=644). Driver A's assignment (shift A=643) was silently overwritten = LOST UPDATE.
+
+PART 2 - FIX 1: conditional UPDATE (compare-and-swap: only succeeds if still OPEN)
+  A1 read : SELECT pickup_id FROM pickup WHERE status='OPEN' AND zone_id=1 AND scheduled_date<=CURRENT_DATE ORDER BY requested_at LIMIT 1
+        -> [(54106,)]
+  B1 read : SELECT pickup_id FROM pickup WHERE status='OPEN' AND zone_id=1 AND scheduled_date<=CURRENT_DATE ORDER BY requested_at LIMIT 1
+        -> [(54106,)]
+  >>> both sessions picked pickup_id 54106
+  A2 write: UPDATE pickup SET status='ASSIGNED', shift_id=643 WHERE pickup_id=54106 AND status='OPEN'
+        -> rowcount = 1
+  A3: COMMIT
+  B2 write: UPDATE pickup SET status='ASSIGNED', shift_id=644 WHERE pickup_id=54106 AND status='OPEN'
+        -> rowcount = 0
+  B3: COMMIT
+  verify  : SELECT pickup_id, status, shift_id FROM pickup WHERE pickup_id=54106
+        -> [(54106, 'ASSIGNED', 643)]
+  RESULT: A updated 1 row, B updated 0 rows; final shift_id=643 (shift A=643). B knows it lost and must pick another pickup.
+
+PART 3 - FIX 2: claim_pickup() uses SELECT ... FOR UPDATE SKIP LOCKED (work queue)
+  A1 claim: SELECT claim_pickup(27, 1)
+        -> [(54107,)]
+  B1 claim: SELECT claim_pickup(28, 1)
+        -> [(54108,)]
+  >>> A claimed 54107, B claimed 54108  -> different pickups: True
+  A2: COMMIT
+  B2: COMMIT
+  verify  : SELECT pickup_id, status, shift_id FROM pickup WHERE pickup_id = ANY(ARRAY[54107,54108]) ORDER BY pickup_id
+        -> [(54107, 'ASSIGNED', 643), (54108, 'ASSIGNED', 644)]
+
+PART 4 - ISOLATION: READ COMMITTED (default) - the new row appears inside A's transaction
+  A1 count: SELECT count(*) FROM pickup WHERE status='OPEN' AND zone_id=1 AND scheduled_date<=CURRENT_DATE
+        -> [(82,)]
+  B1 insert+commit: INSERT INTO pickup(customer_id, zone_id, scheduled_date, pickup_type, status) VALUES (482, 1, CURRENT_DATE, 'on_demand', 'OPEN') RETURNING pickup_id
+        -> [(54110,)]
+  B2: COMMIT  (a new OPEN pickup is now committed)
+  A2 count: SELECT count(*) FROM pickup WHERE status='OPEN' AND zone_id=1 AND scheduled_date<=CURRENT_DATE
+        -> [(83,)]
+  A3: COMMIT
+  A4 count (new transaction): SELECT count(*) FROM pickup WHERE status='OPEN' AND zone_id=1 AND scheduled_date<=CURRENT_DATE
+        -> [(83,)]
+  RESULT: inside the transaction A saw 82 then 83; in a new transaction it sees 83.
+
+PART 5 - ISOLATION: REPEATABLE READ - A keeps its frozen snapshot until it commits
+  A1 count: SELECT count(*) FROM pickup WHERE status='OPEN' AND zone_id=1 AND scheduled_date<=CURRENT_DATE
+        -> [(82,)]
+  B1 insert+commit: INSERT INTO pickup(customer_id, zone_id, scheduled_date, pickup_type, status) VALUES (482, 1, CURRENT_DATE, 'on_demand', 'OPEN') RETURNING pickup_id
+        -> [(54112,)]
+  B2: COMMIT  (a new OPEN pickup is now committed)
+  A2 count: SELECT count(*) FROM pickup WHERE status='OPEN' AND zone_id=1 AND scheduled_date<=CURRENT_DATE
+        -> [(82,)]
+  A3: COMMIT
+  A4 count (new transaction): SELECT count(*) FROM pickup WHERE status='OPEN' AND zone_id=1 AND scheduled_date<=CURRENT_DATE
+        -> [(83,)]
+  RESULT: inside the transaction A saw 82 then 82; in a new transaction it sees 83.
+
+PART 6 - DEADLOCK: A locks p1 then wants p2; B locks p2 then wants p1
+  A1 lock p1: SELECT pickup_id FROM pickup WHERE pickup_id=54113 FOR UPDATE
+        -> [(54113,)]
+  B1 lock p2: SELECT pickup_id FROM pickup WHERE pickup_id=54114 FOR UPDATE
+        -> [(54114,)]
+  A2: A asks for p2=54114 (held by B) -> blocks
+  B2: B asks for p1=54113 (held by A) -> circular wait; PostgreSQL's detector fires after ~1 s
+  session A: DEADLOCK DETECTED -> deadlock detected
+  session B: got the second lock
+  RESULT: exactly one session was chosen as the victim and rolled back; the other proceeded.
+
+PART 6b - THE FIX: both sessions lock in the SAME order (lowest pickup_id first) -> no deadlock
+  A1 lock p1: SELECT pickup_id FROM pickup WHERE pickup_id=54113 FOR UPDATE
+        -> [(54113,)]
+  B1: B also asks for p1=54113 first (waits for A)
+  A2 lock p2: SELECT pickup_id FROM pickup WHERE pickup_id=54114 FOR UPDATE
+        -> [(54114,)]
+  A3: COMMIT (releases p1 and p2)
+  session B: finished, no deadlock
+
+==============================================================================
+ALL SIX PARTS COMPLETED - every line above is real output from this PostgreSQL server.
+==============================================================================
