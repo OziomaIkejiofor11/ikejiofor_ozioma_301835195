@@ -1,0 +1,132 @@
+==> (re)create database cleanroute
+NOTICE:  database "cleanroute" does not exist, skipping
+DROP DATABASE
+CREATE DATABASE
+==> schema (tables, constraints, triggers)
+CREATE EXTENSION
+CREATE EXTENSION
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/schema.sql:12: NOTICE:  table "collection_record" does not exist, skipping
+DROP TABLE
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/schema.sql:13: NOTICE:  table "pickup" does not exist, skipping
+DROP TABLE
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/schema.sql:14: NOTICE:  table "shift" does not exist, skipping
+DROP TABLE
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/schema.sql:15: NOTICE:  table "payment" does not exist, skipping
+DROP TABLE
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/schema.sql:16: NOTICE:  table "subscription" does not exist, skipping
+DROP TABLE
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/schema.sql:17: NOTICE:  table "customer" does not exist, skipping
+DROP TABLE
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/schema.sql:18: NOTICE:  table "crew_member" does not exist, skipping
+DROP TABLE
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/schema.sql:19: NOTICE:  table "truck" does not exist, skipping
+DROP TABLE
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/schema.sql:20: NOTICE:  table "disposal_site" does not exist, skipping
+DROP TABLE
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/schema.sql:21: NOTICE:  table "zone" does not exist, skipping
+DROP TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE TRIGGER
+ALTER TABLE
+ALTER TABLE
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE VIEW
+==> bulk data generator (50k+ pickups + collection records)
+BEGIN
+TRUNCATE TABLE
+INSERT 0 6
+INSERT 0 5
+INSERT 0 12
+INSERT 0 24
+DO
+INSERT 0 480
+CREATE TABLE
+INSERT 0 17
+INSERT 0 639
+INSERT 0 51120
+INSERT 0 2975
+UPDATE 53055
+UPDATE 53055
+UPDATE 50980
+UPDATE 2075
+INSERT 0 50980
+INSERT 0 12000
+COMMIT
+        what        |   n   
+--------------------+-------
+ customers          | 480
+ shifts             | 639
+ zones              | 6
+ crew_members       | 24
+ subscriptions      | 480
+ trucks             | 12
+ payments           | 12000
+ collection_records | 50980
+ pickups            | 54095
+(9 rows)
+
+==> constraint tests (each violation must be rejected)
+BEGIN
+CREATE TABLE
+CREATE FUNCTION
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/constraint_tests.sql:58: NOTICE:  TEST 1 truck overlap PASS - rejected by [exc_truck_no_overlap]: conflicting key value violates exclusion constraint "exc_truck_no_overlap"
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/constraint_tests.sql:67: NOTICE:  TEST 2 driver overlap PASS - rejected by [exc_driver_no_overlap]: conflicting key value violates exclusion constraint "exc_driver_no_overlap"
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/constraint_tests.sql:75: NOTICE:  TEST 3 one active subscription PASS - rejected by [uq_one_active_subscription]: duplicate key value violates unique constraint "uq_one_active_subscription"
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/constraint_tests.sql:85: NOTICE:  TEST 4 collection-day trigger PASS - rejected by [collection day]: scheduled pickup for zone 7 must fall on its collection day (Wednesday) - got 2026-11-12
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/constraint_tests.sql:106: NOTICE:  TEST 5 shift capacity trigger PASS - rejected by [exceed truck capacity]: shift 640 would exceed truck capacity: current 4900.00 kg + new 200.00 kg > capacity 5000.00 kg (truck 13)
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/constraint_tests.sql:114: NOTICE:  TEST 6 weight > 0 CHECK PASS - rejected by [collection_record_weight_kg_check]: new row for relation "collection_record" violates check constraint "collection_record_weight_kg_check"
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/constraint_tests.sql:120: NOTICE:  TEST 7 payment > 0 CHECK PASS - rejected by [payment_amount_naira_check]: new row for relation "payment" violates check constraint "payment_amount_naira_check"
+psql:/workspaces/ikejiofor_ozioma_301835195/portfolio-1-database-design/constraint_tests.sql:128: NOTICE:  TEST 8 status transition trigger PASS - rejected by [invalid pickup status transition]: invalid pickup status transition: OPEN -> COLLECTED
+               test               | outcome 
+----------------------------------+---------
+ TEST 1 truck overlap             | PASS
+ TEST 2 driver overlap            | PASS
+ TEST 3 one active subscription   | PASS
+ TEST 4 collection-day trigger    | PASS
+ TEST 5 shift capacity trigger    | PASS
+ TEST 6 weight > 0 CHECK          | PASS
+ TEST 7 payment > 0 CHECK         | PASS
+ TEST 8 status transition trigger | PASS
+(8 rows)
+
+                               summary                                
+----------------------------------------------------------------------
+ ==> All 8 constraint tests PASSED (each by its intended constraint).
+(1 row)
+
+ROLLBACK
+==> P1 DONE
+    quick check:  sudo runuser -u postgres -- psql -d cleanroute -c 'SELECT status, count(*) FROM pickup GROUP BY status;'
