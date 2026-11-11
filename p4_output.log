@@ -1,0 +1,359 @@
+==> create collections + jsonSchema validator
+setup_validation.js: created smart_bins, bin_readings (time-series), complaints (validated).
+==> generate smart-bin sensor data (40k+ readings)
+smart_bins inserted: 48
+bin_readings inserted: 64512
+bin_readings count   : 64512
+==> generate complaint reports (polymorphic, oneOf)
+complaints inserted: 12000
+complaints count   : 12000
+by type            : [{"_id":"illegal_dumping","n":2371},{"_id":"spillage","n":4830},{"_id":"missed_pickup","n":4799}]
+==> create indexes and print BEFORE/AFTER explain() (COLLSCAN -> IXSCAN)
+
+==== Q1 BEFORE index: explain() ====
+    stages: COLLSCAN
+        totalDocsExamined=720  totalKeysExamined=0  nReturned=15  executionTimeMillis=1
+
+==== Q1 AFTER index: explain() ====
+    stages: FETCH -> IXSCAN -> FETCH -> IXSCAN
+        totalDocsExamined=15  totalKeysExamined=15  nReturned=15  executionTimeMillis=1
+
+==== Q2 BEFORE index: explain() ====
+    stages: COLLSCAN
+        totalDocsExamined=12000  totalKeysExamined=0  nReturned=869  executionTimeMillis=5
+
+==== Q2 AFTER index: explain() ====
+    stages: FETCH -> IXSCAN
+        totalDocsExamined=869  totalKeysExamined=869  nReturned=869  executionTimeMillis=1
+
+==== Q3 BEFORE index: explain() ====
+    stages: COLLSCAN
+        totalDocsExamined=12000  totalKeysExamined=0  nReturned=484  executionTimeMillis=5
+
+==== Q3 AFTER index: explain() ====
+    stages: FETCH -> IXSCAN
+        totalDocsExamined=484  totalKeysExamined=484  nReturned=484  executionTimeMillis=1
+
+==== Q4 BEFORE index: explain() ====
+    stages: GROUP -> UNPACK_TS_BUCKET -> CLUSTERED_IXSCAN
+        totalDocsExamined=96  totalKeysExamined=0  nReturned=1  executionTimeMillis=3
+
+==== Q4 AFTER index: explain() ====
+    stages: GROUP -> UNPACK_TS_BUCKET -> FETCH -> IXSCAN
+        totalDocsExamined=16  totalKeysExamined=17  nReturned=1  executionTimeMillis=2
+
+==== indexes on bin_readings ====
+[
+  {
+    v: 2,
+    key: {
+      meta: 1,
+      ts: 1
+    },
+    name: 'meta_1_ts_1'
+  },
+  {
+    v: 2,
+    key: {
+      'meta.bin_id': 1,
+      ts: -1
+    },
+    name: 'meta.bin_id_1_ts_-1'
+  },
+  {
+    v: 2,
+    key: {
+      'meta.zone': 1,
+      ts: -1
+    },
+    name: 'meta.zone_1_ts_-1'
+  }
+]
+
+==== indexes on complaints ====
+[
+  {
+    v: 2,
+    key: {
+      _id: 1
+    },
+    name: '_id_'
+  },
+  {
+    v: 2,
+    key: {
+      zone: 1,
+      type: 1
+    },
+    name: 'zone_1_type_1'
+  },
+  {
+    v: 2,
+    key: {
+      created_at: -1
+    },
+    name: 'created_at_-1'
+  }
+]
+==> run aggregations
+
+==== A1: bins currently over 80% full, by zone ====
+[
+  {
+    _id: 'Independence Layout',
+    bins_over_80: 8,
+    max_fill: 100
+  },
+  {
+    _id: 'New Haven',
+    bins_over_80: 8,
+    max_fill: 100
+  },
+  {
+    _id: 'Lekki',
+    bins_over_80: 8,
+    max_fill: 100
+  },
+  {
+    _id: 'Ikeja',
+    bins_over_80: 8,
+    max_fill: 100
+  },
+  {
+    _id: 'Yaba',
+    bins_over_80: 8,
+    max_fill: 100
+  },
+  {
+    _id: 'Surulere',
+    bins_over_80: 8,
+    max_fill: 100
+  }
+]
+
+==== A2: average fill rate per day (all bins) ====
+[
+  {
+    _id: '2026-10-28',
+    avg_fill_pct: 19.501296296296296,
+    readings: 432
+  },
+  {
+    _id: '2026-10-29',
+    avg_fill_pct: 74.43463324652777,
+    readings: 4608
+  },
+  {
+    _id: '2026-10-30',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-10-31',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-11-01',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-11-02',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-11-03',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-11-04',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-11-05',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-11-06',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-11-07',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-11-08',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-11-09',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-11-10',
+    avg_fill_pct: 100,
+    readings: 4608
+  },
+  {
+    _id: '2026-11-11',
+    avg_fill_pct: 100,
+    readings: 4176
+  }
+]
+
+==== A3: complaints per zone and type ====
+[
+  {
+    _id: {
+      zone: 'Ikeja',
+      type: 'illegal_dumping'
+    },
+    complaints: 402
+  },
+  {
+    _id: {
+      zone: 'Ikeja',
+      type: 'missed_pickup'
+    },
+    complaints: 793
+  },
+  {
+    _id: {
+      zone: 'Ikeja',
+      type: 'spillage'
+    },
+    complaints: 790
+  },
+  {
+    _id: {
+      zone: 'Independence Layout',
+      type: 'illegal_dumping'
+    },
+    complaints: 391
+  },
+  {
+    _id: {
+      zone: 'Independence Layout',
+      type: 'missed_pickup'
+    },
+    complaints: 800
+  },
+  {
+    _id: {
+      zone: 'Independence Layout',
+      type: 'spillage'
+    },
+    complaints: 795
+  },
+  {
+    _id: {
+      zone: 'Lekki',
+      type: 'illegal_dumping'
+    },
+    complaints: 414
+  },
+  {
+    _id: {
+      zone: 'Lekki',
+      type: 'missed_pickup'
+    },
+    complaints: 812
+  },
+  {
+    _id: {
+      zone: 'Lekki',
+      type: 'spillage'
+    },
+    complaints: 869
+  },
+  {
+    _id: {
+      zone: 'New Haven',
+      type: 'illegal_dumping'
+    },
+    complaints: 371
+  },
+  {
+    _id: {
+      zone: 'New Haven',
+      type: 'missed_pickup'
+    },
+    complaints: 802
+  },
+  {
+    _id: {
+      zone: 'New Haven',
+      type: 'spillage'
+    },
+    complaints: 787
+  },
+  {
+    _id: {
+      zone: 'Surulere',
+      type: 'illegal_dumping'
+    },
+    complaints: 427
+  },
+  {
+    _id: {
+      zone: 'Surulere',
+      type: 'missed_pickup'
+    },
+    complaints: 803
+  },
+  {
+    _id: {
+      zone: 'Surulere',
+      type: 'spillage'
+    },
+    complaints: 774
+  },
+  {
+    _id: {
+      zone: 'Yaba',
+      type: 'illegal_dumping'
+    },
+    complaints: 366
+  },
+  {
+    _id: {
+      zone: 'Yaba',
+      type: 'missed_pickup'
+    },
+    complaints: 789
+  },
+  {
+    _id: {
+      zone: 'Yaba',
+      type: 'spillage'
+    },
+    complaints: 815
+  }
+]
+
+==== A4 (bonus): spillage complaints that are hazardous, by severity ====
+[
+  {
+    _id: 'high',
+    n: 247
+  },
+  {
+    _id: 'low',
+    n: 256
+  },
+  {
+    _id: 'medium',
+    n: 226
+  }
+]
+==> P4 DONE
+    quick check:  mongosh --eval 'db = db.getSiblingDB("cleanroute"); printjson(db.bin_readings.countDocuments()); printjson(db.complaints.countDocuments());'
