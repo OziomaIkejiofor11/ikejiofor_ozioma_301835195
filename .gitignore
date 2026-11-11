@@ -1,0 +1,6 @@
+# keep the repo tidy: local editor/OS files only. The *_output.log evidence files ARE committed.
+.DS_Store
+*.swp
+__pycache__/
+*.pyc
+*.zip
